@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Step by Step with a Sample Contract · CosmWasm Documentation</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="**TODO: go through and clean this up**"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Step by Step with a Sample Contract · CosmWasm Documentation"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cosmwasm.github.io/docs/"/><meta property="og:description" content="**TODO: go through and clean this up**"/><meta property="og:image" content="https://cosmwasm.github.io/docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://cosmwasm.github.io/docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><link rel="alternate" type="application/atom+xml" href="https://cosmwasm.github.io/docs/blog/atom.xml" title="CosmWasm Documentation Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://cosmwasm.github.io/docs/blog/feed.xml" title="CosmWasm Documentation Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/docs/css/main.css"/><script src="/docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/docs/"><img class="logo" src="/docs/img/favicon.ico" alt="CosmWasm Documentation"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/docs/intro/overview" target="_self">Docs</a></li><li class=""><a href="/docs/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/confio/cosmwasm" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Intro</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Intro<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/docs/intro/overview">Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/intro/smart-contracts">Smart Contracts</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/intro/using-the-sdk">Cosmos SDK</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/intro/rust-basics">Rust Basics</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/docs/intro/first-demo">First Demo</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Step by Step with a Sample Contract</h1></header><article><div><span><p><strong>TODO: go through and clean this up</strong></p>
+<p>To get this to work, you will need to first deploy a local single-node testnet. I assume you have some experience with this, if not, please refer to gaiad documentation. You will need go 1.13 installed and standard dev tooling, and <code>$HOME/go/bin</code> set to be in your <code>$PATH</code>.</p>
+<p><strong>WARNING</strong> The server will only work on osx and linux. Windows support is on the roadmap (but you should be able to use a Windows client).</p>
+<p>Checkout code and compile:</p>
+<pre><code class="hljs">git clone http<span class="hljs-variable">s:</span>//github.<span class="hljs-keyword">com</span>/cosmwasm/wasmd.git
+<span class="hljs-keyword">cd</span> wasmd
+<span class="hljs-keyword">make</span> install
+</code></pre>
+<p>Set up a single-node local testnet:</p>
+<pre><code class="hljs css language-bash"><span class="hljs-built_in">cd</span> <span class="hljs-variable">$HOME</span>
+wasmd init --chain-id=testing testing
+
+wasmcli keys add validator
+
+wasmd add-genesis-account $(wasmcli keys show validator -a) 1000000000stake,1000000000validatortoken
+
+wasmd gentx --name validator
+wasmd collect-gentxs
+wasmd start
+</code></pre>
+<p>Now, open up another window and set up your client:</p>
+<pre><code class="hljs css language-bash">wasmcli config chain-id testing
+wasmcli config trust-node <span class="hljs-literal">true</span>
+wasmcli config node tcp://localhost:26657
+wasmcli config output json
+wasmcli config indent <span class="hljs-literal">true</span>
+
+wasmcli keys add fred
+wasmcli keys add bob
+wasmcli keys list
+
+<span class="hljs-comment"># verify initial setup</span>
+wasmcli query account $(wasmcli keys show validator -a)
+wasmcli query wasm list-code
+wasmcli query wasm list-contracts
+
+<span class="hljs-comment"># give some tokens to fred for later</span>
+wasmcli tx send $(wasmcli keys show validator -a) $(wasmcli keys show fred -a) 98765stake
+wasmcli query account $(wasmcli keys show fred -a)
+wasmcli query account $(wasmcli keys show bob -a)
+</code></pre>
+<p>Now we have a running node and a prepare cli client, let's upload some contracts and let them run. First, we must upload some wasm code that we plan to use in the future. You can download the bytecode to verify it is proper:</p>
+<pre><code class="hljs css language-bash">curl -L https://github.com/cosmwasm/wasmd/blob/master/x/wasm/internal/keeper/testdata/contract.wasm?raw=<span class="hljs-literal">true</span> &gt; upload.wasm
+wasmcli tx wasm store validator upload.wasm --gas 800000
+wasmcli query wasm list-code
+wasmcli query wasm code 1 download.wasm
+sha256sum upload.wasm download.wasm
+</code></pre>
+<p>We can now create an instance of this wasm contract. Here the verifier will fund an escrow, that will allow fred to control payout and upon release, the funds go to bob.</p>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># instantiate contract and verify</span>
+INIT=<span class="hljs-string">"{\"verifier\":\"<span class="hljs-variable">$(wasmcli keys show fred -a)</span>\", \"beneficiary\":\"<span class="hljs-variable">$(wasmcli keys show bob -a)</span>\"}"</span>
+wasmcli tx wasm instantiate validator 1 <span class="hljs-string">"<span class="hljs-variable">$INIT</span>"</span> --amount=50000stake
+
+<span class="hljs-comment"># check the contract state (and account balance)</span>
+sleep 3
+wasmcli query wasm list-contracts
+CONTRACT=cosmos18vd8fpwxzck93qlwghaj6arh4p7c5n89uzcee5
+wasmcli query wasm contract <span class="hljs-variable">$CONTRACT</span>
+wasmcli query wasm contract-state <span class="hljs-variable">$CONTRACT</span>
+wasmcli query account <span class="hljs-variable">$CONTRACT</span>
+</code></pre>
+<p>Once we have the funds in the escrow, let us try to release them. First, failing to do so with a key that is not the verifier, then using the proper key to release:</p>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># execute fails if wrong person</span>
+wasmcli tx wasm execute validator <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"{}"</span>
+sleep 3
+wasmcli query tx &lt;<span class="hljs-built_in">hash</span> from above&gt;
+wasmcli query account $(wasmcli keys show bob -a)
+
+<span class="hljs-comment"># but succeeds when fred tries</span>
+wasmcli tx wasm execute fred <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"{}"</span>
+sleep 3
+wasmcli query account $(wasmcli keys show bob -a)
+wasmcli query account <span class="hljs-variable">$CONTRACT</span>
+</code></pre>
+<p>This is a very simple example for the <a href="https://github.com/confio/cosmwasm/blob/master/contracts/hackatom/src/contract.rs">minimal demo contract</a>, but it should show you what is possible, limited only by the wasm code you upload and the json messages you send.</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 11/25/2019 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/docs/intro/rust-basics"><span class="arrow-prev">← </span><span>Rust Basics</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/docs/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/docs/en/cosmwasm-for-developers.html">Getting Started</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a></div><div><h5>More</h5><a href="/docs/blog">Blog</a><a href="https://github.com/confio/cosmwasm">GitHub</a></div></section><section class="copyright">Copyright © 2019 Confio UO</section></footer></div></body></html>
