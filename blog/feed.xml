@@ -9,7 +9,7 @@
         <generator>Feed for Node.js</generator>
         <image>
             <title>CosmWasm Documentation Blog</title>
-            <url>http://docs.cosmwasm.com/img/favicon.ico</url>
+            <url>http://docs.cosmwasm.com/img/cosm-wasm.png</url>
             <link>http://docs.cosmwasm.com/blog</link>
         </image>
         <copyright>Copyright © 2019 Confio UO</copyright>
