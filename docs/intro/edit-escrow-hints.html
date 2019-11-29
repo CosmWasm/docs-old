@@ -24,7 +24,7 @@
     }
 </code></pre>
 <p>Implement <code>try_steal</code>:</p>
-<pre><code class="hljs css language-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">try_steal</span></span>(params: Params, state: State, destination: <span class="hljs-built_in">String</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Response&gt; {
+<pre><code class="hljs css language-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">try_steal</span></span>(params: Params, _state: State, destination: <span class="hljs-built_in">String</span>) -&gt; <span class="hljs-built_in">Result</span>&lt;Response&gt; {
     <span class="hljs-keyword">if</span> &amp;params.message.signer != THIEF {
         Unauthorized {}.fail()
     } <span class="hljs-keyword">else</span> {
@@ -32,7 +32,7 @@
             messages: <span class="hljs-built_in">vec!</span>[CosmosMsg::<span class="hljs-built_in">Send</span> {
                 from_address: params.contract.address,
                 to_address: destination,
-                amount: params.contract.balance,
+                amount: params.contract.balance.unwrap_or_default(),
             }],
             log: <span class="hljs-literal">Some</span>(<span class="hljs-string">"safe cracked"</span>.to_string()),
             data: <span class="hljs-literal">None</span>,
@@ -79,4 +79,4 @@
     }
 }
 </code></pre>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 11/27/2019 by Ethan Frey</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#handlemsg">HandleMsg</a></li><li><a href="#adding-handler">Adding Handler</a></li><li><a href="#test-steal">Test Steal</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/cosmwasm-for-developers.html">Getting Started</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/confio/cosmwasm">GitHub</a></div></section><section class="copyright">Copyright © 2019 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 11/29/2019 by Ethan Frey</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#handlemsg">HandleMsg</a></li><li><a href="#adding-handler">Adding Handler</a></li><li><a href="#test-steal">Test Steal</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/cosmwasm-for-developers.html">Getting Started</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/confio/cosmwasm">GitHub</a></div></section><section class="copyright">Copyright © 2019 Confio UO</section></footer></div></body></html>
