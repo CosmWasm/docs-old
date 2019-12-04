@@ -40,6 +40,7 @@ After this compiles, it should produce a file in `target/wasm32-unknown-unknown/
 ### Unit Tests
 
 Let's try running the unit tests:
+> Pro Tip: Add `RUST_BACKTRACE=1` to enable better error reporting. To learn more about that feature (and why it's not a default) check out [this](https://github.com/rust-lang/cargo/issues/1517) issue.
 
 ```
 RUST_BACKTRACE=1 cargo unit-test
