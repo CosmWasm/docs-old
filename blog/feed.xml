@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>CosmWasm Documentation Blog</title>
+        <title>Get started with multi-chain smart contracts! Blog</title>
         <link>http://www.cosmwasm.com/blog</link>
-        <description>The best place to stay up-to-date with the latest CosmWasm Documentation news and events.</description>
+        <description>The best place to stay up-to-date with the latest Get started with multi-chain smart contracts! news and events.</description>
         <lastBuildDate>Wed, 11 Dec 2019 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
-            <title>CosmWasm Documentation Blog</title>
+            <title>Get started with multi-chain smart contracts! Blog</title>
             <url>http://www.cosmwasm.com/img/cosm-wasm.png</url>
             <link>http://www.cosmwasm.com/blog</link>
         </image>
