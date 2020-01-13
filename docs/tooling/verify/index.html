@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Verifying with Cryptographic Code Reviews · Get started with multi-chain smart contracts!</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="An essential component to creating secure, trustable smart contracts are audits"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Verifying with Cryptographic Code Reviews · Get started with multi-chain smart contracts!"/><meta property="og:type" content="website"/><meta property="og:url" content="http://www.cosmwasm.com/"/><meta property="og:description" content="An essential component to creating secure, trustable smart contracts are audits"/><meta property="og:image" content="http://www.cosmwasm.com/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://www.cosmwasm.com/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><link rel="alternate" type="application/atom+xml" href="http://www.cosmwasm.com/blog/atom.xml" title="Get started with multi-chain smart contracts! Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://www.cosmwasm.com/blog/feed.xml" title="Get started with multi-chain smart contracts! Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/cosm-wasm.png" alt="Get started with multi-chain smart contracts!"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/intro/overview" target="_self">Docs</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/confio/cosmwasm" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Production Tooling</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Intro<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/intro/overview">Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/multichain">Multi-Chain</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/actor">Actor Model</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/addresses">Names and Addresses</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/query">Querying</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/serialization">Serialization</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/roadmap">Roadmap</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Getting Started<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/getting-started/intro">First Contract</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/smart-contracts">Smart Contracts</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/using-the-sdk">Cosmos SDK</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/rust-basics">Rust Basics</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/editing-escrow-contract">Editing Contracts</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/first-demo">Deploying to Testnet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Name Service<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/name-service/intro">Intro</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Production Tooling<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem navListItemActive"><a class="navItem" href="/docs/tooling/verify">Verifying Code</a></li><li class="navListItem"><a class="navItem" href="/docs/tooling/reviews">Reviewing Code</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Verifying with Cryptographic Code Reviews</h1></header><article><div><span><p>An essential component to creating secure, trustable smart contracts are audits
+and code reviews. We don't believe that audits should be the sole domain of a
+niche group of companies, but that many developers are also capable of reviewing each
+others code and help spot bugs and security holes. With CosmWasm, we aim to nurture
+a culture of collective code reviews to aid in our goal of open, highly secure contracts.</p>
+<h2><a class="anchor" aria-hidden="true" id="crev"></a><a href="#crev" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CRev</h2>
+<p><a href="https://news.ycombinator.com/item?id=18824923"><code>crev</code></a> is an idea of decentralized,
+cryptographically verifiable code reviews, centered around a web of trust.
+More specifically <a href="https://github.com/crev-dev/cargo-crev/tree/master/cargo-crev"><code>cargo-crev</code></a>
+is a set of tooling to enable the <code>crev</code> design with existing rust tooling,
+notably the ubiquitous <code>cargo</code> command. We support using <code>cargo-crev</code> to review all
+smart contracts and common dependencies, and will be providing a seed node of trust that
+you can sync with, and maintain a directory of some well-known CosmWasm developers. You
+can always find others by traversing the web of trust.</p>
+<p>The idea is anyone can sign and publish a review of any crate. Each developer can also
+assign trust (<code>low</code>, <code>medium</code>, <code>high</code> or <code>distrust</code>) to other developers, based on how
+much they trust the other's reviews (both honesty and quality). From this, we can pull
+in many reviews on various crates and <code>cargo crev crate verify</code> will show the current
+status of the current crate and all dependencies. Ideally all dependencies of <code>cosmwasm</code>
+and the major contracts / libraries built on it, like <a href="https://crates.io/crates/cw-erc20">cw-erc20</a>
+and <a href="https://crates.io/crates/cw-storage">cw-storage</a> will have multiple, public reviews,
+so we can build a solid base for security.</p>
+<h2><a class="anchor" aria-hidden="true" id="getting-started"></a><a href="#getting-started" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Getting Started</h2>
+<p>I highly recommend going through the <a href="https://github.com/crev-dev/cargo-crev/blob/master/cargo-crev/src/doc/getting_started.md">Getting Started</a>
+page on <code>cargo-crev</code> to understand all the elements, but we will lead you through a simple usage of it here,
+tailored to CosmWasm developers. Please note that this will assign trust to the core
+CosmWasm developer, <a href="https://github.com/ethanfrey">Ethan Frey</a>, but you can skip that part and
+use another seed if you already know other developers using <code>crev</code>.
+I hope the trust graph will soon be less centralized, but it is best to start with a seed
+to produce a highly connected clique. Also, please verify the trust ID in at least 2 places before
+adding it.</p>
+<h3><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h3>
+<p>You will first need to have <code>openssl</code> installed on your system for TLS (HTTPS) support.</p>
+<p>Ubuntu: <code>sudo apt-get install openssl libssl-dev</code></p>
+<p>MacOS: <code>brew install openssl</code></p>
+<p>Now, you can build the <code>cargo-crev</code> command:</p>
+<pre><code class="hljs css language-sh">cargo install cargo-crev
+cargo crev --<span class="hljs-built_in">help</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="creating-a-crevid"></a><a href="#creating-a-crevid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating a <code>CRevID</code></h3>
+<p>The first step to using <code>crev</code> is to create and publish your identity. We will be using
+cryptographic keys stored on your local computer to sign the trust proofs, and publishing
+the trust graph and code reviews over multiple git repositories (one for each user).
+I recommend just <a href="https://github.com/crev-dev/cargo-crev/blob/master/cargo-crev/src/doc/getting_started.md#creating-a-crevid">following the official instructions here</a>,
+but if you just want to cut and paste, this should get you up.</p>
+<p><a href="https://github.com/crev-dev/crev-proofs/fork">Fork the crev-proofs repo</a> to your personal github account.</p>
+<p>Or you can copy it to another git server via:</p>
+<pre><code class="hljs css language-sh">git <span class="hljs-built_in">clone</span> https://github.com/crev-dev/crev-proofs
+<span class="hljs-built_in">cd</span> crev-proofs
+git remote <span class="hljs-built_in">set</span>-url origin YOUR_EMPTY_GIT_REPO_HERE
+git push -u origin master
+</code></pre>
+<p>Now, you can create your personal id (local to your computer, and add it to the repo:</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># you need the https variant, not the git@ (ssh) variant</span>
+cargo crev id new --url https://github.com/YOUR_NAME/crev-proofs
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="bootstrapping-your-web-of-trust"></a><a href="#bootstrapping-your-web-of-trust" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bootstrapping your Web of Trust</h2>
+<p>You will need at least one trusted developer to get started.
+Let's pick a few reputable ones and assign them a trust level of <code>medium</code>.
+You can feel free to use different seeds if you wish, but these are the commands:</p>
+<p>Trust <a href="https://github.com/dpc"><code>dpc</code></a>, one of the core <code>cargo-crev</code> developers. This will pull in many
+reviews of standard rust crates:</p>
+<pre><code class="hljs css language-sh">cargo crev repo fetch url https://github.com/dpc/crev-proofs
+cargo crev id trust FYlr8YoYGVvDwHQxqEIs89reKKDy-oWisoO0qXXEfHE
+</code></pre>
+<p>Trust <a href="https://github.com/ethanfrey"><code>ethanfrey</code></a>, the main CosmWasm developer. This will pull
+in reviews of many <code>cosmwasm</code> related packages:</p>
+<pre><code class="hljs css language-sh">cargo crev repo fetch url https://github.com/ethanfrey/crev-proofs
+<span class="hljs-comment"># two ids for different devices</span>
+cargo crev id trust aXPP9kgM2ENNWug1ltY3AiHBDFP6NWoDcoaHM7b_i08
+cargo crev id trust Fa_KJe6fi4eDoak8SGkysvRCNjZP4IC03L05iw_vepI
+</code></pre>
+<p>Once you have trusted one (or both) of the above seeds, you can pull in their trust graph.
+This will show up as a number of <code>medium</code> and <code>low</code> level trust rankings. We can
+then fetch all their reviews to get a large net of reviews. This cannot be used to provide
+high trust, but can definitely help spread the word on any malicious packages discovered:</p>
+<pre><code class="hljs css language-sh">cargo crev id query trusted
+cargo crev repo fetch trusted
+</code></pre>
+<p>It takes a while, but now you should be rewarded with some shared knowledge.</p>
+<h2><a class="anchor" aria-hidden="true" id="verifying-a-crate"></a><a href="#verifying-a-crate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Verifying a Crate</h2>
+<p>Once we have seeded the trust graph, let's try it out. Go into a local rust project
+and try to verify it. If you don't have one in particular, I suggest to
+<code>git clone https://github.com/confio/cosmwasm</code> in a new directory.
+Now that we are in the root of a rust project (in the same directory as <code>Cargo.toml</code>),
+let's check out what reviews we find in the web of trust:</p>
+<pre><code class="hljs css language-sh">cargo crev crate clean
+cargo crev crate verify --no-dev-dependencies
+</code></pre>
+<p>You will see a few green <code>pass</code>, quite a few <code>none</code> (some with reviews, but from lower trusted devs),
+and maybe even a <code>warn</code>. When I first ran this, I found a <code>warn</code> message by <code>redox_syscall</code>
+and <code>smallvec</code>. Let's investigate further. You can get some general info on the crates:</p>
+<pre><code class="hljs css language-sh">cargo crev crate info smallvec
+cargo crev crate info hex
+</code></pre>
+<p>But if you want to get the full reviews, you must use:</p>
+<pre><code class="hljs css language-sh">cargo crev repo query review hex
+cargo crev repo query review smallvec
+
+<span class="hljs-comment"># to find negative reviews, you can also query related advisories and issues</span>
+cargo crev repo query advisory smallvec
+cargo crev repo query issue smallvec
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="test-your-contract"></a><a href="#test-your-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Test your contract</h3>
+<p>Go to the directory of a smart contract you created, or go to the <code>escrow</code>
+contract in <a href="https://github.com/confio/cosmwasm-examples"><code>https://github.com/confio/cosmwasm-examples</code></a>
+if you don't have your own contract. These have fewer dependencies, and I would really
+like to get all of the common dependencies reviewed in the mid-term. Due to the
+feature flags in contracts derived from <a href="https://github.com/confio/cosmwasm-template"><code>cosmwasm-template</code></a>,
+you will need the following (notice extra flag on verify):</p>
+<pre><code class="hljs css language-sh">cargo crev crate clean
+cargo crev crate verify --no-dev-dependencies --no-default-features
+</code></pre>
+<p>My check shows a number of <code>pass</code> and no <code>warn</code>, a good start. Also, a number
+of the <code>none</code> crates, have a positive review on a slightly older version
+of the same crate, so those should be low hanging fruit to update.</p>
+<h2><a class="anchor" aria-hidden="true" id="publishing-your-web-of-trust"></a><a href="#publishing-your-web-of-trust" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publishing your Web of Trust</h2>
+<p>Now that you have learned some tools, feel free to add a few other developers
+to your web of trust, and then publish your key here, so we can start connecting.</p>
+<pre><code class="hljs css language-sh">cargo crev repo publish
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="cosmwasm-developers"></a><a href="#cosmwasm-developers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CosmWasm Developers</h3>
+<p>Beyond the <a href="#bootstrapping-your-web-of-trust">seeds listed above</a>, we can list some
+known developers working on CosmWasm. These may add relevant reviews, but only add
+them if you know them (or their work) beyond this website.</p>
+<p><strong>None</strong></p>
+<p>Please <a href="https://github.com/cosmwasm/docs/pulls">create a PR on <code>cosmwasm/docs</code></a> if you want to be
+on this list. Anyone that has contributed to cosmwasm or published a cosmwasm-based
+contract is eligable to be on the list. It is not curated, so please make your own
+decision if you know and trust these developers.</p>
+<h3><a class="anchor" aria-hidden="true" id="rust-developers"></a><a href="#rust-developers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rust Developers</h3>
+<p>You can also check out the <a href="https://github.com/crev-dev/cargo-crev/wiki/List-of-Proof-Repositories">crev proof repository list</a>
+to get a list of general Rust developers who have been submitting proofs for other
+crates. If you have reviewed some general (non cosmwasm-specific) crates, you may
+also want to add yourself to that list.</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 1/9/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/name-service/intro"><span class="arrow-prev">← </span><span>Intro</span></a><a class="docs-next button" href="/docs/tooling/reviews"><span>Reviewing Code</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#crev">CRev</a></li><li><a href="#getting-started">Getting Started</a><ul class="toc-headings"><li><a href="#installation">Installation</a></li><li><a href="#creating-a-crevid">Creating a <code>CRevID</code></a></li></ul></li><li><a href="#bootstrapping-your-web-of-trust">Bootstrapping your Web of Trust</a></li><li><a href="#verifying-a-crate">Verifying a Crate</a><ul class="toc-headings"><li><a href="#test-your-contract">Test your contract</a></li></ul></li><li><a href="#publishing-your-web-of-trust">Publishing your Web of Trust</a><ul class="toc-headings"><li><a href="#cosmwasm-developers">CosmWasm Developers</a></li><li><a href="#rust-developers">Rust Developers</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
