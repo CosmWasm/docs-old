@@ -78,7 +78,9 @@ fn handle_steal() {
     let params = mock_params_height(
         "anybody",
          &[],
-         &coin("1000", "earth")
+         &coin("1000", "earth"),
+         877,
+         1,
     );
     let handle_res = handle(&mut store, params, msg.clone());
     assert!(handle_res.is_err());
@@ -87,7 +89,9 @@ fn handle_steal() {
     let params = mock_params_height(
         THIEF,
         &[],
-        &coin("1000", "earth")
+        &coin("1000", "earth"),
+        878,
+        2,
     );
     let handle_res = handle(&mut store, params, msg.clone()).unwrap();
     assert_eq!(1, handle_res.messages.len());
