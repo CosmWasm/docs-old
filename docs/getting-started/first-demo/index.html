@@ -104,7 +104,7 @@ wasmcli query wasm list-contracts
 
 <span class="hljs-comment"># upload and see we create code 1</span>
 <span class="hljs-comment"># gas is huge due to wasm size... but auto-zipping reduced this from 800k to around 260k</span>
-wasmcli tx wasm store validator contract.wasm --gas 300000  -y
+wasmcli tx wasm store contract.wasm --from validator --gas 300000  -y
 wasmcli query wasm list-code
 
 <span class="hljs-comment"># verify this uploaded contract has the same hash as the local code</span>
@@ -118,7 +118,7 @@ diff contract.wasm download.wasm
 <p>We can now create an instance of this wasm contract. Here the verifier will fund an escrow, that will allow fred to control payout and upon release, the funds go to bob.</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># instantiate contract and verify</span>
 INIT=<span class="hljs-string">"{\"arbiter\":\"<span class="hljs-variable">$(wasmcli keys show fred -a)</span>\", \"recipient\":\"<span class="hljs-variable">$(wasmcli keys show bob -a)</span>\", \"end_time\":0, \"end_height\":0}"</span>
-wasmcli tx wasm instantiate validator 1 <span class="hljs-string">"<span class="hljs-variable">$INIT</span>"</span> --amount=50000stake  -y
+wasmcli tx wasm instantiate 1 <span class="hljs-string">"<span class="hljs-variable">$INIT</span>"</span> --from validator --amount=50000stake  -y
 
 <span class="hljs-comment"># check the contract state (and account balance)</span>
 wasmcli query wasm list-contracts
@@ -147,19 +147,19 @@ wasmcli query wasm contract-state smart <span class="hljs-variable">$CONTRACT</s
 <p>Once we have the funds in the escrow, let us try to release them. First, failing to do so with a key that is not the verifier, then using the proper key to release. Note, we only release part of the escrow here (to leave some for the thief):</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># execute fails if wrong person</span>
 APPROVE=<span class="hljs-string">'{"approve":{"quantity":[{"amount":"20000","denom":"stake"}]}}'</span>
-wasmcli tx wasm execute validator <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$APPROVE</span>"</span> -y
+wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$APPROVE</span>"</span> --from validator -y
 <span class="hljs-comment"># looking at the logs should show: "execute wasm contract failed: Unauthorized"</span>
 <span class="hljs-comment"># and bob should still be broke (and broken showing the account does not exist Error)</span>
 wasmcli query account $(wasmcli keys show bob -a)
 
 <span class="hljs-comment"># but succeeds when fred tries</span>
-wasmcli tx wasm execute fred <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$APPROVE</span>"</span> -y
+wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$APPROVE</span>"</span> --from fred -y
 wasmcli query account $(wasmcli keys show bob -a)
 wasmcli query account <span class="hljs-variable">$CONTRACT</span>
 
 <span class="hljs-comment"># now the thief can steal it all</span>
 STEAL=<span class="hljs-string">"{\"steal\":{\"destination\":\"<span class="hljs-variable">$(wasmcli keys show thief -a)</span>\"}}"</span>
-wasmcli tx wasm execute thief <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$STEAL</span>"</span> -y
+wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$STEAL</span>"</span> --from thief -y
 <span class="hljs-comment"># remember that you gave the thief 1 stake to start with above... so this should be 30001</span>
 wasmcli query account $(wasmcli keys show thief -a)
 wasmcli query account <span class="hljs-variable">$CONTRACT</span>
@@ -169,4 +169,4 @@ wasmcli query account <span class="hljs-variable">$CONTRACT</span>
 <p>If you feel you understand enough (and have prior experience with rust), feel free to grab <a href="https://github.com/confio/cosmwasm-template"><code>cosmwasm-template</code></a> and use that as a configured project to start modifying. Do not clone the repo, but rather follow the <a href="https://github.com/confio/cosmwasm-template/blob/master/README.md">README</a> on how to use <code>cargo-generate</code> to generate your skeleton.</p>
 <p>In either case, there is some documentation in <a href="https://github.com/confio/go-cosmwasm/blob/master/spec/Index.md"><code>go-cosmwasm</code></a> and <a href="https://github.com/confio/cosmwasm/blob/master/README.md"><code>cosmwasm</code></a> that may be helpful. Any issues (either bugs or just confusion), please submit them on <a href="https://github.com/confio/cosmwasm/issues"><code>cosmwasm/issues</code></a> if they deal with the smart contract, and <a href="https://github.com/cosmwasm/wasmd/issues"><code>wasmd/issues</code></a> if they have to do with the SDK integration.</p>
 <p>Happy Hacking!</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 1/17/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/editing-escrow-contract"><span class="arrow-prev">← </span><span>Editing Contracts</span></a><a class="docs-next button" href="/docs/name-service/intro"><span>Intro</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#preparation">Preparation</a></li><li><a href="#uploading-the-code">Uploading the Code</a></li><li><a href="#instantiating-the-contract">Instantiating the Contract</a></li><li><a href="#next-steps">Next Steps</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 1/20/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/editing-escrow-contract"><span class="arrow-prev">← </span><span>Editing Contracts</span></a><a class="docs-next button" href="/docs/name-service/intro"><span>Intro</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#preparation">Preparation</a></li><li><a href="#uploading-the-code">Uploading the Code</a></li><li><a href="#instantiating-the-contract">Instantiating the Contract</a></li><li><a href="#next-steps">Next Steps</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
