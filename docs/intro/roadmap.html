@@ -55,59 +55,66 @@
               }
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Rough Roadmap</h1></header><article><div><span><p>So far, CosmWasm is an effort of a <a href="http://confio.tech">small team</a> funded by <a href="https://interchain.io">ICF Grants</a>. We have been building out core technology to support various blockchains in the Cosmos Ecosystem. The following is the currently planned roadmap, largely based on the remaining funding of the ICF Grant. If there is strong interest (and funding) from a project that wishes to deploy this to production, the roadmap priorities may be modified.</p>
-<p>You can view up-to-date status in our <a href="https://github.com/orgs/confio/projects/1">Github project page</a>.</p>
+<p>You can view up-to-date status in our <a href="https://github.com/orgs/CosmWasm/projects/1">Github project page</a>.</p>
 <h2><a class="anchor" aria-hidden="true" id="past-achievements"></a><a href="#past-achievements" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Past Achievements</h2>
-<p><strong>August-October 2019</strong>:
-Core work to build out CosmWasm environment, and build system, example code, and cosmos sdk integration.</p>
-<p><strong>November 2019</strong>:
-Tested the whole stack integration, wrote tutorials and documentation, polished many rough edges.</p>
-<p><strong>December 2019</strong>:
-<a href="https://www.cosmwasm.com">CosmWasm Documentation</a> is live, including a <a href="../getting-started/intro">tutorial</a>.
-<a href="https://github.com/confio/cosmwasm/tree/v0.5.2">CosmWasm v0.5.2</a>, with full support for <code>init</code> and <code>handle</code> is the first stable release.
-<a href="https://github.com/cosmwasm/wasmd"><code>wasmd</code></a> sample blockchain is published and tested.</p>
-<h2><a class="anchor" aria-hidden="true" id="planned-work"></a><a href="#planned-work" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Planned Work</h2>
+<p><strong>August-October 2019</strong>:</p>
+<ul>
+<li>Core work to build out CosmWasm environment, and build system, example code, and cosmos sdk integration.</li>
+</ul>
+<p><strong>November 2019</strong>:</p>
+<ul>
+<li>Tested the whole stack integration, wrote tutorials and documentation, polished many rough edges.</li>
+</ul>
+<p><strong>December 2019</strong>:</p>
+<ul>
+<li><a href="https://www.cosmwasm.com">CosmWasm Documentation</a> is live, including a <a href="../getting-started/intro">tutorial</a>.</li>
+<li><a href="https://github.com/CosmWasm/cosmwasm/tree/v0.5.2">CosmWasm v0.5.2</a>, with full support for <code>init</code> and <code>handle</code> is the first stable release.</li>
+<li><a href="https://github.com/CosmWasm/wasmd"><code>wasmd</code></a> sample blockchain is published and tested.</li>
+</ul>
 <p><strong>January 2020</strong>:</p>
-<p>Release CosmWasm 0.6:</p>
 <ul>
-<li>Complete overhaul on the stub the query interface <a href="https://github.com/confio/cosmwasm/issues/72">#72</a></li>
-<li>Standardize Human/Canonical Addresses <a href="https://github.com/confio/cosmwasm/issues/73">#73</a></li>
-<li>Various improvements in the storage layer <a href="https://github.com/confio/cosmwasm/issues/54">#54</a>, <a href="https://github.com/confio/cosmwasm/issues/70">#70</a>, maybe <a href="https://github.com/confio/cosmwasm/issues/53">#53</a></li>
-<li>Support compression of wasm bytecode in contracts <a href="https://github.com/confio/go-cosmwasm/issues/20">#20</a></li>
-<li>Add some stricter checks on uploaded wasm bytecode <a href="https://github.com/confio/cosmwasm/issues/50">#50</a></li>
+<li><a href="https://medium.com/confio/announcing-wasmd-release-d865abf381b">CosmWasm v0.6.0 released</a> with support for <code>query</code> and many enhancements to make contract development more ergonomic.</li>
+<li><a href="https://github.com/CosmWasm/cosmwasm-examples">cosmwasm-examples</a> is live with <code>escrow</code> and <code>erc20</code> contracts</li>
+<li>Reproduceable builds with <a href="https://github.com/CosmWasm/cosmwasm-opt">cosmwasm-opt</a></li>
+<li>Investigate feasibility of <a href="https://github.com/CosmWasm/cosmwasm/pull/118">writing contracts in AssemblyScript</a> as well as Rust</li>
+<li>Much work on JS interfaces</li>
 </ul>
-<p>Launch testnet:</p>
+<p><strong>February 2020</strong>:</p>
 <ul>
-<li>Unincentivized testnet run by 4+ independent validators</li>
-<li>Public testbed to allow testing and sharing smart contracts</li>
-<li>Support common Cosmos SDK tools (block explorer, wallet)</li>
-<li>This will be reset at least once on the way to a more stable &quot;Concept Chain&quot;</li>
+<li>First <a href="https://medium.com/confio/announcing-wasmd-release-d865abf381b">stable release of wasmd</a> with tagged Cosmos SDK dependency, to be easily imported by other projects</li>
+<li>First <a href="https://medium.com/confio/introduction-to-cosmwasm-js-548f58d9f6af">release of CosmWasm JS</a>. <a href="https://github.com/CosmWasm/cosmwasm-js"><code>cosmwasm-js</code></a> is an easy-to-use TypeScript SDK to talk to CosmWasm contracts</li>
+<li>Demo integration of a <a href="https://medium.com/confio/adding-cosmwasm-to-the-neuma-multichain-wallet-ec657d893268">chrome extension signing CosmWasm token contracts</a>. in this case allowing an ERC20-like contract to be traded along with native tokens.</li>
+<li><a href="https://github.com/CosmWasm/cosmwasm-examples/tree/master/nameservice">nameservice contract</a> released as example to parallel Cosmos SDK tutorial</li>
 </ul>
-<p><strong>Q1 2020</strong>:</p>
-<p>Build more dev tooling:</p>
+<p><strong>March 2020</strong>:</p>
 <ul>
-<li>Etherscan-like setup to validate rust code behind contracts and publicize JSON schemas</li>
-<li>A standard package registry to share contracts (like <a href="https://crates.io">crates.io</a>)</li>
-<li>Client-side library (TypeScript?) to call smart contracts, enabling web dApps</li>
-<li>CLI tooling for all common tasks</li>
+<li><a href="https://medium.com/confio/cosmwasm-0-7-released-6db5a037f943">CosmWasm v0.7.0 released</a> released with much internal contract cleanup, but especially much more powerful and clean REST API for <code>wasmd</code> (inspired by ongoing <code>cosmwasm-js</code> work)</li>
+<li><a href="https://medium.com/confio/cosmwasm-demo-net-launched-4c604674f3e0">Demo Net launched</a> to upload and run your contracts without local blockchain</li>
+<li><a href="https://github.com/CosmWasm/code-explorer"><code>code-explorer</code></a> released to inspect all code and contracts on chain</li>
+<li><a href="https://forum.enigma.co/t/testnet-is-live-with-smart-contracts/1386">Enigma testnet running with CosmWasm</a> smart contract support</li>
+<li><a href="https://medium.com/confio/dont-trust-cosmwasm-verify-db1caac2d335">Verify Rust source</a> behind uploaded CosmWasm contracts</li>
+<li>Much enhanced <code>cosmwasm-js</code>: <a href="https://medium.com/confio/cosmwasmclient-part-1-reading-e0313472a158">Reading</a> and Writing</li>
+<li>NameService React app demoing full-stack solution (from contract to UI)</li>
 </ul>
-<p>Better documentation:</p>
+<h2><a class="anchor" aria-hidden="true" id="planned-work"></a><a href="#planned-work" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Planned Work</h2>
+<p>Better Examples:</p>
 <ul>
 <li>Complete <a href="../name-service/intro">Name Service</a> tutorial.</li>
-<li>Finalize <a href="https://github.com/confio/cosmwasm-examples/pull/2">Atomic Swap</a> and <a href="https://github.com/confio/cosmwasm-examples/pull/10">ERC20</a> example contracts.</li>
-<li>Refine <a href="https://www.cosmwasm.com">cosmwasm.com</a></li>
-<li>Present at at least one Meetup</li>
-<li>Other documentation as requested by active users</li>
+<li>Finalize <a href="https://github.com/CosmWasm/cosmwasm-examples/pull/2">Atomic Swap</a> example contracts.</li>
 </ul>
-<p>Launch &quot;concept chain&quot;:</p>
+<p>Release CosmWasm 0.8:</p>
 <ul>
-<li>Cut a tagged release of <code>wasmd</code> when <a href="https://github.com/cosmos/cosmos-sdk/issues/5172">Cosmos SDK v0.38</a> is released (with IBC)</li>
-<li>Deploy stable network with 10+ independent validators</li>
-<li>Deploy developer tooling linked to this chain</li>
-<li>Cultivate a developer community to grow the ecosystem of CosmWasm</li>
+<li>Cross-contract queries</li>
+<li>Add iterators to the Storage layer</li>
+<li>Support for automatic secondary indexes</li>
+</ul>
+<p>Add IBC support:</p>
+<ul>
+<li>Simple interface to expose IBC to contracts</li>
+<li>Full IBC integration inside <code>wasmd</code></li>
 </ul>
 <p>Participate in <a href="https://cosmos.network/goz/">Game of Zones</a> with minimal working IBC integration with contracts.</p>
 <h2><a class="anchor" aria-hidden="true" id="beyond"></a><a href="#beyond" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Beyond</h2>
-<p>Further develop IBC support and tooling</p>
 <p>Other features as requested by projects building on CosmWasm.</p>
 <p>Further developing the &quot;concept chain&quot;</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 12/18/2019 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/intro/serialization"><span class="arrow-prev">← </span><span>Serialization</span></a><a class="docs-next button" href="/docs/getting-started/intro"><span>First Contract</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#past-achievements">Past Achievements</a></li><li><a href="#planned-work">Planned Work</a></li><li><a href="#beyond">Beyond</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 3/12/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/intro/serialization"><span class="arrow-prev">← </span><span>Serialization</span></a><a class="docs-next button" href="/docs/getting-started/intro"><span>First Contract</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#past-achievements">Past Achievements</a></li><li><a href="#planned-work">Planned Work</a></li><li><a href="#beyond">Beyond</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>

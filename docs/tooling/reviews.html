@@ -87,7 +87,7 @@ eg. the <code>extern handle</code> calls <code>contract::handle</code>). Ensure 
 file imports types from this same contract. If you see any issues here,
 please flag them.</p>
 <p>As a second step, you can review the submitted artifacts are correct, using the
-<a href="https://github.com/confio/cosmwasm-opt">standard build process</a>:</p>
+<a href="https://github.com/CosmWasm/cosmwasm-opt">standard build process</a>:</p>
 <pre><code class="hljs css language-sh"><span class="hljs-comment"># these should be the same</span>
 sha256sum contract.wasm
 cat hash.txt
@@ -102,7 +102,7 @@ docker run --rm -v $(<span class="hljs-built_in">pwd</span>):/code \
 diff hash.txt hash_old.txt
 </code></pre>
 <p>If there is a mismatch, please file an issue on the crate you are reviewing
-and/or <a href="https://github.com/confio/cosmwasm-opt"><code>cosmwasm-opt</code></a> if you suspect
+and/or <a href="https://github.com/CosmWasm/cosmwasm-opt"><code>cosmwasm-opt</code></a> if you suspect
 a non-determinism in their output. It may be a simple oversight and the <code>contract.wasm</code>
 from an older version, so give the author a chance to fix it before flagging a
 negative review.</p>
@@ -125,9 +125,9 @@ this may mean sending to myself will decrease and increment the same account, bu
 only the last save will count (just the increment). To be more secure, make sure
 you save one object before loading the next one if there is any chance of them being
 the same: <code>load, update, save A. load, update, save B</code>. Note that the
-<a href="https://github.com/confio/cw-storage"><code>cw-storage</code></a> crate provides a helper
+<a href="https://github.com/CosmWasm/cw-storage"><code>cw-storage</code></a> crate provides a helper
 for just this case to help avoid such bugs:
-<a href="https://github.com/confio/cw-storage/blob/master/src/typed.rs#L72-L81"><code>TypedStorage.update</code></a>.</p>
+<a href="https://github.com/CosmWasm/cw-storage/blob/master/src/typed.rs#L72-L81"><code>TypedStorage.update</code></a>.</p>
 <p>Please make sure to file issues on the crates github account for any issue you discover,
 and link them to the review. If the crate owner responds with a new version fixing the filed bugs,
 please review the changes, and submit a new review for the next published version. This may, for example,
@@ -190,7 +190,7 @@ by querying the reviews directly:</p>
 <p>One take-away of this, is that the most essential crates to review (besides anything
 you immediately intend to put on a production blockchain), are those crates which
 are imported by others. This includes libraries, such as
-<a href="https://github.com/confio/cw-storage"><code>cw-storage</code></a>, as well as contracts designed
+<a href="https://github.com/CosmWasm/cw-storage"><code>cw-storage</code></a>, as well as contracts designed
 to be imported by others and extended (which will likely be true of a future version
 of <code>cw-erc20</code>). Doing so leverages the value of the review not just for one contract,
 but for many contracts that depend on that code.</p>
@@ -211,4 +211,4 @@ in the review file is updated.</p>
 If this is not what you expect, make sure that the crate owner has published the new version of their
 crate to <a href="https://crates.io">crates.io</a>. Maybe the fixes are just in <code>master</code> and you will have to
 wait for an official release to add a new review on that.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 1/9/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/tooling/verify"><span class="arrow-prev">← </span><span>Verifying Code</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#select-your-editor">Select your editor</a></li><li><a href="#go-through-the-code">Go through the code</a></li><li><a href="#write-your-review">Write your review</a></li><li><a href="#publishing">Publishing</a></li><li><a href="#visibility-of-contract-reviews">Visibility of contract reviews</a></li><li><a href="#updating-your-review">Updating your review</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 3/12/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/tooling/verify"><span class="arrow-prev">← </span><span>Verifying Code</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#select-your-editor">Select your editor</a></li><li><a href="#go-through-the-code">Go through the code</a></li><li><a href="#write-your-review">Write your review</a></li><li><a href="#publishing">Publishing</a></li><li><a href="#visibility-of-contract-reviews">Visibility of contract reviews</a></li><li><a href="#updating-your-review">Updating your review</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/confio/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
