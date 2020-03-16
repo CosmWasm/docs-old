@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>Get started with multi-chain smart contracts! Blog</title>
+        <title>CosmWasm Documentation Blog</title>
         <link>http://www.cosmwasm.com/blog</link>
-        <description>The best place to stay up-to-date with the latest Get started with multi-chain smart contracts! news and events.</description>
+        <description>The best place to stay up-to-date with the latest CosmWasm Documentation news and events.</description>
         <lastBuildDate>Wed, 11 Dec 2019 06:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
-            <title>Get started with multi-chain smart contracts! Blog</title>
+            <title>CosmWasm Documentation Blog</title>
             <url>http://www.cosmwasm.com/img/cosm-wasm.png</url>
             <link>http://www.cosmwasm.com/blog</link>
         </image>

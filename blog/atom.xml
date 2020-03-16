@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.cosmwasm.com/blog</id>
-    <title>Get started with multi-chain smart contracts! Blog</title>
+    <title>CosmWasm Documentation Blog</title>
     <updated>2019-12-11T06:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.cosmwasm.com/blog"/>
-    <subtitle>The best place to stay up-to-date with the latest Get started with multi-chain smart contracts! news and events.</subtitle>
+    <subtitle>The best place to stay up-to-date with the latest CosmWasm Documentation news and events.</subtitle>
     <logo>http://www.cosmwasm.com/img/cosm-wasm.png</logo>
     <rights>Copyright © 2020 Confio UO</rights>
     <entry>
