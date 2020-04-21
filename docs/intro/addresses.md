@@ -22,7 +22,7 @@ This is where we define a *Canonical Address*. This is defined to be stable and 
 
 Note that there may be multiple valid human addresses at one time (during a transition), so the following may or may not be equal:
 
-`humanize(canonicalize(human_addr)) ?= human_addr`
+`humanize(canonicalize(human_addr)) ?== human_addr`
 
 We define the *Canonical Address* as the binary representation used internally in the blockchain. This is what the native tokens are indexed by and therefore must never change for the life of an account. This is the representation that should be used for all **storage lookups** (if you use part of an address as the key in the storage). Furthermore, you very likely want to store the canonical address in your contracts, so if a payout happens long after the contract was created, the stored beneficiary is still a valid string.
 
@@ -53,4 +53,4 @@ Let's keep imagining what is possible with *Human Names*, once we develop a solu
 }
 ```
 
-This would not be some spec to be resolved client-side, but the actual interchange format used on the blockchain. So one smart contract could also dispatch such a message in the course of execution. Do you like this idea? Comments? [Please add your thoughts on github](https://github.com/confio/cosmwasm/issues/80).
+This would not be some spec to be resolved client-side, but the actual interchange format used on the blockchain. So one smart contract could also dispatch such a message in the course of execution. Do you like this idea? Comments? [Please add your thoughts on github](https://github.com/CosmWasm/cosmwasm/issues/80).
