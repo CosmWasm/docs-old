@@ -20,6 +20,6 @@ Cargo generate is a developer tool which uses existing repos as a template. Belo
 
 Cosmwasm provides a [template repo](https://github.com/confio/cosmwasm-template). We will be using this to scaffold all the needed files for writing a smart contract. Below is the command that you will use in order to generate your repository to start building your smart contract. You can place anything you'd like for `YOUR_NAME_HERE`. For use in this tutorial we will use name_service.
 
-`cargo generate --git https://github.com/confio/cosmwasm-template.git --name YOUR_NAME_HERE`
+`cargo generate --git https://github.com/confio/cosmwasm-template.git --name YOUR_CONTRACT_NAME_HERE`
 
 Next we will breakdown all the files that are created.

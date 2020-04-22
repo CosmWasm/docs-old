@@ -4,19 +4,19 @@ title: Contract
 sidebar_label: Contract
 ---
 
-Now we have made it to the point at which we will be working on the core logic of the contract. If you navigate the contract file you there will be a basic contract already defined.
+Now we have made it to the point at which we will be working on the core logic of the contract. If you navigate to the contract file there will be a basic contract already defined.
 
 We will walk through the file one by one.
 
 ## Init
 
-Init defines what is needed for initialization of the contract. This means that every contract can be deployed once and created multiples time for different use cases.
+Init defines what is needed for initialization of the contract. This means that every contract is deployed once and created multiples time.
 
-If you remember the `InitMsg` we defined earlier, this will be what our contract will need when created.
+Earlier we defined a `InitMsg` this is what will be used within `Init`. 
 
 ## Handle
 
-Handle uses the `HandleMsg` we defined in `msg.rs`. In rust you can (pattern match)[https://doc.rust-lang.org/1.6.0/book/patterns.html] to see what msg you received. This makes things simpler. We defined to types
+Handle uses the `HandleMsg` we defined in `msg.rs`. In rust there is [pattern matching](https://doc.rust-lang.org/1.6.0/book/patterns.html) which will help with writing elegant code. The types that need to be defined are as follows:
 
 - `Register`: this will call `try_register` and pass in `deps`, `env`, and the `name` received from the msg.
   - `deps` is a combination of storage and api.
@@ -60,9 +60,9 @@ The steps needed to complete this function are as follows:
 1. Get the config_state, our parameters
 2. Make sure enough tokens are being used with the messages
 
-   - We created a helper function for this: `assert_sent_sufficient_coin`
+   - There is a helper function for this: `assert_sent_sufficient_coin`
 
-3. Make our key, the name, into bytes
+3. Make the key and name into bytes
 4. Get the new_owner as a canonical_address, this is defined by Cosmwasm
    - `deps.api.canonical_address(&to)?;`
 5. Next using the resolver we update the key's NameRecord

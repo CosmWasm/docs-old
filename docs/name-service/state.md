@@ -29,6 +29,8 @@ Two function are defined above, and most of the contracts state types will also 
 
 For our smart contract we would like to define two parameters when a contract is created. We would like to have a purchase price for the names and a transfer price, both of which will be of the type `Coin`. Cosmwasm comes with many types predefined for usage, you can find them [here](https://github.com/confio/cosmwasm/blob/v0.7.0/src/types.rs).
 
-Next we also need to define a record to a name. We will only define a owner of the name, this is a predefined type as well. We also want this to be storage to more than a singleton, so we will decide to go with a [bucket](https://github.com/confio/cw-storage#bucket). Like above we also need to define two functions: a read only and a read/write function. The
+Next we also need to define a record to a name. We will only define a owner of the name, this is a predefined type as well. We also want this to be storage to more than a singleton, so we will decide to go with a [Bucket](https://github.com/confio/cw-storage#bucket). Like above we also need to define two functions: a read only and a read/write function.
+
+<!-- Canonical and human address  -->
 
 Before going to the next page take a few minutes to implement what is stated above. On the next page you will see the answers.
