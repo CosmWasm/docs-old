@@ -8,13 +8,13 @@ Now we will define the msgs that are needed for our contract. If you open the `m
 
 ### InitMsg
 
-This are the Config parameters that we defined in the state file. These are our parameter's for the contract. This message will only be used once per contract, when its created.
+These are the Config parameters that we defined in the state file. This message will only be used once per contract, when its created.
 
-We need to alter the `InitMsg` in order to match the config.
+We need to alter the `InitMsg` in order to match the config type.
 
 ### HandleMsg
 
-This will be an enum, if you are unclear on enums read more on them [here](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html), we will define the actions that our contract needs to execute its logic.
+This will be an enum, if you are unclear on enums you can read more on them [here](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html). We will define the actions that our contract needs to execute its logic.
 
 Currently there are two defined msgs `Increment` and `Reset`. For our contract we need to change these two msgs
 

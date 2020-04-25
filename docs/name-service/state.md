@@ -31,6 +31,6 @@ For our smart contract we would like to define two parameters when a contract is
 
 Next we also need to define a record to a name. We will only define a owner of the name, this is a predefined type as well. We also want this to be storage to more than a singleton, so we will decide to go with a [Bucket](https://github.com/confio/cw-storage#bucket). Like above we also need to define two functions: a read only and a read/write function.
 
-<!-- Canonical and human address  -->
+As we go through the tutorial you will see two different types of address `HumanAddr` and `CannonicalAddr`. When receiving data from state you will it will come in a form that is not easily legible by humans, this is the `CannonicalAddr`. When you receive the address you will want to transform it to a `HumanAddr`. There are helper functions that will assist you in this.
 
 Before going to the next page take a few minutes to implement what is stated above. On the next page you will see the answers.
