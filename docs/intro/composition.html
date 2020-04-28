@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Contract Composition · CosmWasm Documentation</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Given the [Actor model](./actor) of dispatching messages, and [synchronous queries](./query) implemented in CosmWasm v0.8, we have all the raw components"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Contract Composition · CosmWasm Documentation"/><meta property="og:type" content="website"/><meta property="og:url" content="http://www.cosmwasm.com/"/><meta property="og:description" content="Given the [Actor model](./actor) of dispatching messages, and [synchronous queries](./query) implemented in CosmWasm v0.8, we have all the raw components"/><meta property="og:image" content="http://www.cosmwasm.com/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://www.cosmwasm.com/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><link rel="alternate" type="application/atom+xml" href="http://www.cosmwasm.com/blog/atom.xml" title="CosmWasm Documentation Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="http://www.cosmwasm.com/blog/feed.xml" title="CosmWasm Documentation Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/cosm-wasm.png" alt="CosmWasm Documentation"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/intro/overview" target="_self">Docs</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/confio/cosmwasm" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Intro</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Intro<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/intro/overview">Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/multichain">Multi-Chain</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/actor">Actor Model</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/addresses">Names and Addresses</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/query">Querying</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/serialization">Serialization</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/intro/composition">Contract Composition</a></li><li class="navListItem"><a class="navItem" href="/docs/intro/roadmap">Roadmap</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Getting Started<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/getting-started/intro">First Contract</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/smart-contracts">Smart Contracts</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/using-the-sdk">Cosmos SDK</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/rust-basics">Rust Basics</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/editing-escrow-contract">Editing Contracts</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started/first-demo">Deploying to Testnet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Name Service<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/name-service/intro">Intro</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Production Tooling<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/tooling/verify">Verifying Code</a></li><li class="navListItem"><a class="navItem" href="/docs/tooling/reviews">Reviewing Code</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Contract Composition</h1></header><article><div><span><p>Given the <a href="./actor">Actor model</a> of dispatching messages, and <a href="./query">synchronous queries</a> implemented in CosmWasm v0.8, we have all the raw components
+to enable arbitrary composition of contracts with both other contracts and native modules. Here we will explain how the components fit together and how they can be extended.</p>
+<p><strong>Note</strong> the text below applies to CosmWasm 0.8, which is not yet released.</p>
+<h2><a class="anchor" aria-hidden="true" id="terminology"></a><a href="#terminology" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Terminology</h2>
+<p>For the remainder of this article, I will make a key distinction between &quot;Contracts&quot; and &quot;Native Modules&quot;. &quot;Contracts&quot; are CosmWasm code that is
+dynamically uploaded to the blockchain at a given address. This can be added after the fact and is not tied to any runtime implementation.
+&quot;Native Modules&quot; are basically Go Cosmos-SDK modules, which are compiled into the blockchain binary. These are relatively static (requiring a
+soft or hard fork to be added or modified) and will differ between different blockchains running CosmWasm.</p>
+<p>We support composition between both types, but we must look more deeply at the integration with &quot;Native Modules&quot;, as using those can
+cause <a href="#portability">Portability</a> issues. To minimize this issue, we provide some abstractions around &quot;Modules&quot;</p>
+<h2><a class="anchor" aria-hidden="true" id="messages"></a><a href="#messages" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Messages</h2>
+<p>Both <code>init</code> and <code>handle</code> can return an arbitrary number of
+<a href="https://github.com/CosmWasm/cosmwasm/blob/08717b4c589bbfe59f44bb8cccffb08f63696413/packages/std/src/init_handle.rs#L11-L31"><code>CosmosMsg</code></a>
+objects, which will be re-dispatched in the same transaction (thus providing atomic success/rollback with the contract execution).
+There are 3 classes of messages:</p>
+<ul>
+<li><code>Contract</code> - This will call a given contract address with a given message (provided in serialized form). It assumes the caller has access to the API format.</li>
+<li><a href="#modules">Module interfaces</a> - These are standardized interfaces that can be supported by any chain to expose native modules under a <em>portable</em> interface.</li>
+<li><a href="#customization"><code>Custom</code></a> - This encapsulates a chain-dependent extension to the message types to call into custom native modules. Ideally they should be <em>immutable</em> on the same chain over time, but they make no portability guarantees.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="queries"></a><a href="#queries" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Queries</h2>
+<p>As of CosmWasm v0.8, we now allow the contracts to make synchronous <em>read-only</em> queries to the surrounding runtime.
+As with <a href="#messages">Messages</a>, we have three fundamental types:</p>
+<ul>
+<li><code>Contract</code> - This will query a given contract address with a given message (provided in serialized form). It assumes the caller has access to the API format.</li>
+<li><a href="#modules">Module interfaces</a> - These are standardized interfaces that can be supported by any chain to expose native modules under a <em>portable</em> interface.</li>
+<li><a href="#customization"><code>Custom</code></a> - This encapsulates a chain-dependent extension to to query custom native modules. Ideally they should be <em>immutable</em> on the same chain over time, but they make no portability guarantees.</li>
+</ul>
+<p>Cross-Contract queries take the address of the contract and a serialized <code>QueryMsg</code> in the contract-specific format, and synchronously get
+a binary serialized return value in the contract-specific format. It is up to the calling contract to understand the appropriate formats.
+In order to simplify this, we can provide some contract-specific type-safe wrappers, much in the way we provide a simple
+<a href="https://github.com/CosmWasm/cosmwasm/blob/08717b4c589bbfe59f44bb8cccffb08f63696413/packages/std/src/traits.rs#L95-L105"><code>query_balance</code></a>
+method as a wrapper around the <code>query</code> implementation provided by the Trait.</p>
+<h2><a class="anchor" aria-hidden="true" id="modules"></a><a href="#modules" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Modules</h2>
+<p>In order to enable better integrations with the native blockchain, we are providing a set of standardized module interfaces
+that should work consistently among all CosmWasm chain. The most basic one
+is to the <code>Bank</code> module, which provides access to the underlying native tokens. This gives us <code>BankMsg::Send</code> as well as
+<code>BankQuery::Balance</code> and <code>BankQuery::AllBalances</code> to check balances and move tokens.</p>
+<p>The second standardized module is <code>staking</code>, which provides some standardized messages for <code>Delegate</code>, <code>Undelegate</code>,
+<code>Redelegate</code> and <code>Withdraw</code>, as well as querying <code>Validators</code> and <code>Delegations</code>. These interfaces are designed to support
+most PoS systems and able to be supported on any PoS system, not just with the current staking module of the Cosmos SDK.
+(So, if you fork that for your chain, the contracts should still work).</p>
+<p>This provides a clean design, where one can develop a contract that eg. issues staking derivatives using the <code>staking</code> module interface,
+and have confidence that that same contract will run on two different blockchains, even if they are both heavily customized and one is
+on Cosmos SDK 0.38 and the other on Cosmos SDK 0.39 (with many breaking changes). The downside here is that every module interface must
+be added to all layers of the stack, which provides some delay to supporting custom features, and we cannot easily add support for every custom
+module in every Cosmos SDK-based blockchain.</p>
+<p>That said, we highly recommend using the module interface when possible, and using <a href="#customization">custom types</a> as a temporary measure
+to keep a fast release cycle. We are happy to work with projects with concrete use cases that can be re-used between many different chains
+to add new standardized module interfaces. Perhaps for governance, or for IBC/light client related features.</p>
+<p>Note, that theoretically these module interfaces can also be implemented by contracts, not just native code.
+Eg. if we made a standard <code>swap</code> interface, and your blockchain has no native <code>swap</code> module, we could upload a UniSwap-inspired contract
+and register that somehow with the Go blockchain. Then the blockchain would know to take the swap message and dispatch it to this custom contract.
+(Note that this is not implemented at all, just an idea of future directions).</p>
+<h2><a class="anchor" aria-hidden="true" id="customization"></a><a href="#customization" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Customization</h2>
+<p>Many chains will want to allow contracts to execute with their custom go modules, without going through all the work to try to turn it into a standardized <a href="#modules">Module Interface</a> and wait for a new CosmWasm release. For this case, we introduce the <code>Custom</code> variant on both <code>CosmosMsg</code> and <code>QueryRequest</code>.
+The idea here is that the contract can define the type to be include in the <code>Custom</code> variants, and it just needs to be agreed upon by the Cosmos SDK app
+(in Golang) on the other side. All the code between the contract and the blockchain codec treats it as opaque json bytes.</p>
+<p>The demo &quot;reflect&quot; contract in the standard CosmWasm repo,
+<a href="https://github.com/CosmWasm/cosmwasm/blob/71f643f577184a23b2f1f122531c944f0de94c34/contracts/reflect/src/msg.rs#L30-L64">shows how to use <code>CustomMsg</code> and <code>CustomQuery</code></a>. You can see how the contract <a href="https://github.com/CosmWasm/cosmwasm/blob/master/contracts/reflect/src/contract.rs#L94-L101">uses a <code>CustomQuery</code></a>
+to call out to some &quot;runtime-provided&quot; code. For unit tests, we can <a href="https://github.com/CosmWasm/cosmwasm/blob/master/contracts/reflect/src/testing.rs#L20-L37">mock out the runtime querier</a>, but in a deployed system, this should be provided by native Go code in your Cosmos-SDK application.</p>
+<p>Beyond trivial cases, we are working with Terra to expose their <code>swap</code>, <code>oracle</code> and <code>treasury</code> modules to CosmWasm contracts on their chains.
+These features need to be exposed in an immutable format that will work forever on their chain, but there is no need for portability.
+More interesting is the ability to quickly expose new features of their native modules to contracts on their chain. In fact, this concrete use
+case inspired all the refactoring to make sure custom messages and queries possible.</p>
+<h2><a class="anchor" aria-hidden="true" id="design-considerations"></a><a href="#design-considerations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Design Considerations</h2>
+<p>In producing a solid design, we want the API to fulfill all these requirements (or strike a good balance if truly impossible to achieve them all):</p>
+<h3><a class="anchor" aria-hidden="true" id="portability"></a><a href="#portability" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Portability</h3>
+<p>The same contract should run on two distinct blockchains, with differing Golang modules, different versions of the Cosmos SDK, or ideally, even
+based on different frameworks (eg. running on Substrate). This should be possible when avoiding <code>Custom</code> messages, and checking the optional features one uses.
+The features are currently <code>staking</code>, which assumes a PoS system, and <code>iterator</code>, which assumes we can do prefix scans over the storage (ie. it is a Merkle <strong>Tree</strong>, not a Merkle <strong>Trie</strong>).</p>
+<h3><a class="anchor" aria-hidden="true" id="immutability"></a><a href="#immutability" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Immutability</h3>
+<p>Contracts are immutable and encode the query and message formats in their bytecode. If we allowed dispatching <code>sdk.Msg</code> in the native format
+(be it json, amino or protobuf), and the format of native messages change, then the contracts would break.
+This may mean that a staking module could never undelegate the tokens. If you think this is a theoretical issue, please note that every major
+update of the Cosmos SDK has produced such breaking changes and has migrations for them. Migrations that cannot be performed on immutable contracts.
+Thus, we need to ensure that our design provides an immutable API to a potentially mutable runtime, which is a primary design criteria when
+designing the standard <a href="#modules">module interfaces</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="extensibility"></a><a href="#extensibility" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extensibility</h3>
+<p>We should be able to add new interfaces to a contract and blockchain without needing to update any of the intermediate layers. That is,
+if you are building a custom <code>superd</code> blockchain app, which imports <code>x/wasm</code> from <code>wasmd</code>, and want to develop contracts on it that
+call into your custom <code>superd</code> modules, then in an ideal world, you could add those message types to an additional <code>cw-superd</code> library
+that you can import in your contracts and add the callbacks to them in <code>superd</code> Go code. <em>Without any changes</em> in <code>cosmwasm-std</code>, <code>cosmwasm-vm</code>,
+<code>go-cosmwasm</code>, or <code>wasmd</code> repositories (which have a different release cycle than your app).</p>
+<p>We provide the <a href="#customization"><code>Custom</code></a> variants to <code>CosmosMsg</code> and <code>QueryRequest</code> to enable such cases. They can provide immutability but not
+portability.</p>
+<h2><a class="anchor" aria-hidden="true" id="usability"></a><a href="#usability" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usability</h2>
+<p>We also want to make it not just secure and <em>possible</em> to compose contracts into a larger whole, but make it simple from the developer's perspective.
+This applies to both the contract authors, as well as the blockchain developers integrating CosmWasm into their custom blockchain.
+And we want to make it easy to build client side applications using the contracts.</p>
+<p>We are using JSON encoding for the CosmWasm messages to make this simple and export <a href="https://github.com/CosmWasm/cosmwasm-examples/tree/master/erc20/schema">JSON schemas</a> for every contract to allow auto-generation of client-side codecs. We also provide <a href="https://github.com/CosmWasm/cosmwasm-js"><code>cosmwasm-js</code></a>
+as a easy-to-use TypeScript library allowing access to all contracts (and bank module) on a CosmWasm-based chain.</p>
+<h3><a class="anchor" aria-hidden="true" id="checking-for-support"></a><a href="#checking-for-support" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Checking for Support</h3>
+<p>If we want to call some extensions, say to the <code>Staking</code> modules, we can compile our contract to handle that. But how do we detect if the blockchain
+can support it? We want to fail on upload or instantiation of a contract, and not discover some key functionality doesn't work on this chain,
+when there is value stored in the contract.</p>
+<p>One idea that the contract make a query call on <code>init</code> (or return in <code>InitResponse</code>) all list of module interfaces it requires to work
+correctly. The runtime should return an error (and abort/rollback) the contract instantiation if it doesn't support all those module interfaces.</p>
+<p>Another idea is to use feature flags to configure which extra features are required by the contract and make some &quot;ghost&quot; imports like
+<code>feature_staking()</code>. This would only pass compatibility check if the runtime also exposed such features. The issue here is that we do not
+want to make this requirement when compiling the cosmwasm_vm (which is embedded as a dll in a blockchain app), but in the blockchain
+app itself, to make it easy to configure. Rather than forking <code>go-cosmwasm</code> and rebuilding it. Thus, we would need someway for the
+blockchain to pass in a list of enabled feature flags, which would then be used in <code>check_compatibility</code> and also exposed in the
+<code>Instance.context</code> (as no-op callbacks, but there so it will link properly).</p>
+<p>Note: This is currently discussed in <a href="https://github.com/CosmWasm/cosmwasm/issues/301">an open issue</a> to be part of the 0.8 release.</p>
+<h3><a class="anchor" aria-hidden="true" id="type-safe-wrappers"></a><a href="#type-safe-wrappers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Type-Safe Wrappers</h3>
+<p>When querying or calling into other contracts, we give up all the type-checks we get with native module interfaces.
+They require the caller to know the details of the caller. This is the same as Ethereum. However, we can provide some &quot;interface&quot;
+wrappers that a contract could export, such that other contracts can easily call into it.</p>
+<p>For example:</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">NameService</span></span>(CanonicalAddr);
+
+<span class="hljs-keyword">impl</span> NameService {
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">query_name</span></span>(deps: &amp;Extern, name: &amp;<span class="hljs-built_in">str</span>) -&gt; CanonicalAddr { <span class="hljs-comment">/* .. */</span> }
+    <span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">register</span></span>(api: &amp;Api, name: &amp;<span class="hljs-built_in">str</span>) -&gt; CosmosMsg { <span class="hljs-comment">/* .. */</span> }
+}
+</code></pre>
+<p>Rather than storing just the <code>CanonicalAddr</code> of the other contract in our configuration, we could store <code>NameService</code>, which is
+a zero-cost <a href="https://doc.rust-lang.org/stable/rust-by-example/generics/new_types.html">&quot;newtype&quot;</a>
+over the original address, with the same serialization format. However, it would provide us
+some type-safe helpers to make queries against the contract, as well as produce <code>CosmosMsg</code> for registration.</p>
+<p>Note that these type-safe wrappers are not tied to an <em>implementation</em> of a contract, but rather the contract's <em>interface</em>.
+Thus, we could create a small library with a list of standard/popular interfaces (like the ERCxxx specs) represented with such
+&quot;newtypes&quot;. A contract creator could import one of these wrappers and then easily call the contract, regardless of implmentation,
+as long as it supported the proper interface</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/28/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/intro/serialization"><span class="arrow-prev">← </span><span>Serialization</span></a><a class="docs-next button" href="/docs/intro/roadmap"><span>Roadmap</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#terminology">Terminology</a></li><li><a href="#messages">Messages</a></li><li><a href="#queries">Queries</a></li><li><a href="#modules">Modules</a></li><li><a href="#customization">Customization</a></li><li><a href="#design-considerations">Design Considerations</a><ul class="toc-headings"><li><a href="#portability">Portability</a></li><li><a href="#immutability">Immutability</a></li><li><a href="#extensibility">Extensibility</a></li></ul></li><li><a href="#usability">Usability</a><ul class="toc-headings"><li><a href="#checking-for-support">Checking for Support</a></li><li><a href="#type-safe-wrappers">Type-Safe Wrappers</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
