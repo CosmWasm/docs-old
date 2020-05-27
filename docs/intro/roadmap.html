@@ -96,25 +96,34 @@
 <li>Much enhanced <code>cosmwasm-js</code>: <a href="https://medium.com/confio/cosmwasmclient-part-1-reading-e0313472a158">Reading</a> and Writing</li>
 <li>NameService React app demoing full-stack solution (from contract to UI)</li>
 </ul>
-<h2><a class="anchor" aria-hidden="true" id="planned-work"></a><a href="#planned-work" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Planned Work</h2>
-<p>Better Examples:</p>
+<p><strong>April/May 2020</strong>:</p>
 <ul>
-<li>Complete <a href="../name-service/intro">Name Service</a> tutorial.</li>
-<li>Finalize <a href="https://github.com/CosmWasm/cosmwasm-examples/pull/2">Atomic Swap</a> example contracts.</li>
-</ul>
-<p>Release CosmWasm 0.8:</p>
-<ul>
-<li>Cross-contract queries</li>
+<li>CosmWasm 0.8 Released</li>
+<li><a href="./composition">Cross-contract queries</a></li>
 <li>Add iterators to the Storage layer</li>
-<li>Support for automatic secondary indexes</li>
+<li><a href="https://github.com/CosmWasm/wasmd/blob/v0.8.0/INTEGRATION.md#adding-custom-hooks">Customizable messages and queries</a></li>
+<li>Integration with staking module</li>
 </ul>
-<p>Add IBC support:</p>
+<h2><a class="anchor" aria-hidden="true" id="planned-work"></a><a href="#planned-work" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Planned Work</h2>
+<p>Fullfil <a href="https://hubble.figment.network/cosmos/chains/cosmoshub-3/governance/proposals/25">Cosmos Hub Proposal</a>:</p>
+<ul>
+<li>Enable contract migrations by owner</li>
+<li>Enable governance control over all lifecycle of contract
+<ul>
+<li>Opt-in when compiling binary, we provide support for both permissionless and permissioned systems</li>
+</ul></li>
+</ul>
+<p>Add IBC support (based on ICF grant):</p>
 <ul>
 <li>Simple interface to expose IBC to contracts</li>
 <li>Full IBC integration inside <code>wasmd</code></li>
 </ul>
-<p>Participate in <a href="https://cosmos.network/goz/">Game of Zones</a> with minimal working IBC integration with contracts.</p>
 <h2><a class="anchor" aria-hidden="true" id="beyond"></a><a href="#beyond" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Beyond</h2>
-<p>Other features as requested by projects building on CosmWasm.</p>
-<p>Further developing the &quot;concept chain&quot;</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 3/12/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/intro/composition"><span class="arrow-prev">← </span><span>Contract Composition</span></a><a class="docs-next button" href="/docs/getting-started/intro"><span>First Contract</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#past-achievements">Past Achievements</a></li><li><a href="#planned-work">Planned Work</a></li><li><a href="#beyond">Beyond</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+<ul>
+<li>Support for writing CosmWasm contracts in <em>AssemblyScript</em> or <em>TinyGo</em></li>
+<li>Stricter and more configurable gas metering</li>
+<li>Support for more host platforms (Beyond Linux and OSX on i686/Amd64)</li>
+<li>Other features as requested by projects building on CosmWasm.</li>
+<li>Further developing the &quot;concept chain&quot;</li>
+</ul>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 5/26/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/intro/composition"><span class="arrow-prev">← </span><span>Contract Composition</span></a><a class="docs-next button" href="/docs/getting-started/intro"><span>First Contract</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#past-achievements">Past Achievements</a></li><li><a href="#planned-work">Planned Work</a></li><li><a href="#beyond">Beyond</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>

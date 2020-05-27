@@ -56,26 +56,35 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Rust Basics</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="installing-rust"></a><a href="#installing-rust" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installing Rust</h2>
 <p>Assuming you have never worked with rust, you will first need to install some tooling. The standard approach is to use <code>rustup</code> to maintain dependencies and handle updating multiple version of <code>cargo</code> and <code>rustc</code>, which you will be using.</p>
-<p>First <a href="https://rustup.rs/">install rustup</a>. Once installed, make sure you have the wasm32 target, both on stable and nightly:</p>
+<p>First <a href="https://rustup.rs/">install rustup</a>. Once installed, make sure you have the wasm32 target:</p>
 <pre><code class="hljs css language-bash">rustup default stable
+cargo version
+<span class="hljs-comment"># If this is lower than 1.41, update</span>
+rustup update stable
+
 rustup target list --installed
 rustup target add wasm32-unknown-unknown
-
-rustup install nightly
-rustup target add wasm32-unknown-unknown --toolchain nightly
 </code></pre>
-<p>For those new to rust, the <code>stable</code> channel comes out every 6 weeks with a stable release (as of 27. November 2019 it is 1.39). The <code>nightly</code> channel is the bleeding edge and not only is it a version or two ahead (for testing), but it allows some extra unstable features, whose APIs may change. For compiling <code>wasm</code>, you will want to use <code>stable</code>. For running integration tests, the implementation of gas metering for the <a href="https://wasmer.io">Wasmer</a> VM requires nightly, so you will want to use that, or choose to disable metering with feature flags (more below).</p>
+<p>For those new to rust, the <code>stable</code> channel comes out every 6 weeks with a stable release (as of 7. May 2020 it is 1.43.1 - we support 1.41+). The <code>nightly</code> channel is the bleeding edge and not only is it a version or two ahead (for testing), but it allows some extra unstable features, whose APIs may change. For compiling <code>wasm</code>, you will want to use <code>stable</code>. We use
+<code>nightly</code> to compile the runtime for <code>wasmd</code>, which needs it for the singlepass compiler with gas metering and more.</p>
 <h2><a class="anchor" aria-hidden="true" id="compiling-and-testing-an-existing-contract"></a><a href="#compiling-and-testing-an-existing-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compiling and Testing an Existing Contract</h2>
 <p>To make sure all the tooling is working properly, let's start with the <a href="https://github.com/CosmWasm/cosmwasm-examples"><code>cosmwasm-examples</code></a> repo and try out an existing simple escrow contract. First clone the repo and try to build the wasm bundle:</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># get the code</span>
 git <span class="hljs-built_in">clone</span> https://github.com/CosmWasm/cosmwasm-examples
+git checkout escrow-0.4.0
 <span class="hljs-built_in">cd</span> cosmwasm-examples/escrow
 
 <span class="hljs-comment"># compile the wasm contract with stable toolchain</span>
 rustup default stable
 cargo wasm
 </code></pre>
-<p>After this compiles, it should produce a file in <code>target/wasm32-unknown-unknown/release/escrow.wasm</code>. A quick <code>ls -l</code> should show around 1.5MB. This is a release build, but not stripped of all unneeded code (we get to shrinking it in the next section, for now just ensure it is there).</p>
+<p>After this compiles, it should produce a file in <code>target/wasm32-unknown-unknown/release/cw_escrow.wasm</code>. A quick <code>ls -l</code> should show around 2MB. This is a release build, but not stripped of all unneeded code. To produce a much smaller
+version, you can run this which tells the compiler to strip all unused code out:</p>
+<pre><code class="hljs css language-bash">RUSTFLAGS=<span class="hljs-string">'-C link-arg=-s'</span> cargo wasm
+</code></pre>
+<p>This produces a file about 174kB. We use this and another optimizer to produce the final product uploaded to the blockchain.
+You don't need to worry about running this yourself (unless you are curious), but you should have an idea of the final
+size of your contract this way.</p>
 <h3><a class="anchor" aria-hidden="true" id="unit-tests"></a><a href="#unit-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Unit Tests</h3>
 <p>Let's try running the unit tests:</p>
 <pre><code class="hljs css language-bash">RUST_BACKTRACE=1 cargo unit-test
@@ -83,23 +92,13 @@ cargo wasm
 <p>After some compilation steps, you should see:</p>
 <pre><code class="hljs css language-text">running 4 tests
 test contract::tests::proper_initialization ... ok
-test contract::tests::handle_refund ... ok
 test contract::tests::cannot_initialize_expired ... ok
 test contract::tests::handle_approve ... ok
+test contract::tests::handle_refund ... ok
 
 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 </code></pre>
 <p><code>RUST_BACKTRACE=1</code> will provide you with full stack traces on any error, which is super useful. This only works for unit tests (which test native rust code, not the compiled wasm). Also, if you want to know where <code>cargo wasm</code> and <code>cargo unit-test</code> come from, they are just aliases defined in <code>.cargo/config</code>. Take a look there to understand the cargo flags more.</p>
-<h3><a class="anchor" aria-hidden="true" id="integration-tests"></a><a href="#integration-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Integration Tests</h3>
-<p>Now that we have compiled the code to wasm, and tested the business logic as raw rust, we want to ensure the compiled wasm code is also correct. There is a bit of extra logic parsing input and reporting errors, so it is always good to add a few tests to make sure the happy path and failure path work well in wasm as well. Luckily, there are a number of helpers for integration tests, so you can pretty much copy a unit test and change a dozen lines or so and it will just work. (Planning to make this number even smaller).</p>
-<p>This is also the point where you have to check if you want to test with gas metering (and thus can measure the expected usage of your contract), or just stick with stable and test without gas. Let's first stick with stable:</p>
-<pre><code class="hljs css language-bash">cargo wasm
-cargo <span class="hljs-built_in">test</span>
-</code></pre>
-<p><code>cargo wasm</code> will run all unit tests, then it will run integration tests against the wasm binary stored in <code>target/wasm32-unknown-unknown/release/escrow.wasm</code> (you can adjust this to test optimized builds as well). If you want to test with gas metering enabled, you need to enable nightly and add some feature flags:</p>
-<pre><code class="hljs css language-bash">rustup run nightly cargo <span class="hljs-built_in">test</span> --no-default-features --features singlepass
-</code></pre>
-<p>You should get the same output as above, just making sure you can run tests with gas metering.</p>
 <h2><a class="anchor" aria-hidden="true" id="setting-up-your-ide"></a><a href="#setting-up-your-ide" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setting up your IDE</h2>
 <p>Now that you can compile and test the code, it is time to edit it. But before that, we will need a good editor to make those changes. I highly recommend plugins that help you learn syntax, especially when just starting rust. There are two free editor environments I can recommend, choose the one that is more familiar to you.</p>
 <p>If you use VSCode (<a href="https://code.visualstudio.com/download">Download link</a>) you just need to add the rust plugin. This is the best supported environment for RLS (Rust Language Server) and uses the rust compiler to type-check all your code on save. This gives the same error messages as the actual compiler would and highlights along the line of the code, but it can be a bit slow to respond sometime (as it runs the compiler). It is quite good, and if you are used to VSCode, I highly recommend it:</p>
@@ -123,4 +122,4 @@ cargo <span class="hljs-built_in">test</span>
 <li><a href="https://doc.rust-lang.org/stable/rust-by-example/">Rust by Example</a></li>
 <li><a href="https://github.com/rust-lang/rustlings/">Rustlings - small exercises</a></li>
 </ul>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 3/12/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/using-the-sdk"><span class="arrow-prev">← </span><span>Cosmos SDK</span></a><a class="docs-next button" href="/docs/getting-started/editing-escrow-contract"><span>Editing Contracts</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installing-rust">Installing Rust</a></li><li><a href="#compiling-and-testing-an-existing-contract">Compiling and Testing an Existing Contract</a><ul class="toc-headings"><li><a href="#unit-tests">Unit Tests</a></li><li><a href="#integration-tests">Integration Tests</a></li></ul></li><li><a href="#setting-up-your-ide">Setting up your IDE</a><ul class="toc-headings"><li><a href="#setting-root-directory">Setting Root Directory</a></li></ul></li><li><a href="#learn-more-rust">Learn More Rust</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 5/26/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/using-the-sdk"><span class="arrow-prev">← </span><span>Cosmos SDK</span></a><a class="docs-next button" href="/docs/getting-started/editing-escrow-contract"><span>Editing Contracts</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installing-rust">Installing Rust</a></li><li><a href="#compiling-and-testing-an-existing-contract">Compiling and Testing an Existing Contract</a><ul class="toc-headings"><li><a href="#unit-tests">Unit Tests</a></li></ul></li><li><a href="#setting-up-your-ide">Setting up your IDE</a><ul class="toc-headings"><li><a href="#setting-root-directory">Setting Root Directory</a></li></ul></li><li><a href="#learn-more-rust">Learn More Rust</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>

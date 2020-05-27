@@ -57,10 +57,10 @@
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Editing the Sample Contract</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="editing-code"></a><a href="#editing-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Editing Code</h2>
 <p>Now that you can compile and run tests, let's try to make some changes to the code and you can see if they work. If you didn't do this already in the last section, it is time to clone the examples repo and check out the escrow code:</p>
 <pre><code class="hljs css language-bash">git <span class="hljs-built_in">clone</span> https://github.com/CosmWasm/cosmwasm-examples
+git checkout escrow-0.4.0
 <span class="hljs-built_in">cd</span> cosmwasm-examples/escrow
-git checkout escrow-0.3.0
 </code></pre>
-<p>Note: This guide is compatible with <code>CosmWasm</code> and <code>wasmd</code> <code>v0.7.x</code>.</p>
+<p>Note: This guide is compatible with <code>CosmWasm</code> and <code>wasmd</code> <code>v0.8.x</code>.</p>
 <h2><a class="anchor" aria-hidden="true" id="a-walk-through-of-the-escrow-contract"></a><a href="#a-walk-through-of-the-escrow-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>A Walk-Through of the Escrow Contract</h2>
 <h3><a class="anchor" aria-hidden="true" id="data-structures"></a><a href="#data-structures" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Structures</h3>
 <p>There are three key data structures used in the contract - for encoding the instantiation message, for encoding the execution messages, and for storing the contract data. We define all messages in <code>src/msg.rs</code>. The <code>State</code> structs are often in <code>state.rs</code>, but if only one then just inline in <code>contracts.rs</code>.</p>
@@ -69,7 +69,7 @@ git checkout escrow-0.3.0
 <li><code>Serialize</code>, <code>Deserialize</code> generate methods so the <a href="https://github.com/serde-rs/json"><code>serde-json</code></a> library can de-serialize them (there is no <a href="https://en.wikipedia.org/wiki/Reflection_(computer_programming)">reflection</a> in rust)</li>
 <li><code>Clone</code> allows you to make a copy of the object (<code>msg.clone()</code>)</li>
 <li><code>Debug</code> and <code>PartialEq</code> are very useful for testing. In particular they allow the use of <code>assert_eq!(expected, msg);</code></li>
-<li><code>JsonSchema</code> is needed by <a href="https://docs.rs/schemars/0.5.0/schemars"><code>schemars</code></a>, so we can use <a href="https://docs.rs/schemars/0.5.0/schemars/macro.schema_for.html"><code>schema_for!</code></a> to generate the json schema objects (in <code>schema/*.json</code>)</li>
+<li><code>JsonSchema</code> is needed by <a href="https://docs.rs/schemars/0.7.0/schemars"><code>schemars</code></a>, so we can use <a href="https://docs.rs/schemars/0.7.0/schemars/macro.schema_for.html"><code>schema_for!</code></a> to generate the json schema objects (in <code>schema/*.json</code>)</li>
 </ul>
 <p>From <code>contract.rs</code>:</p>
 <pre><code class="hljs css language-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]</span>
@@ -77,8 +77,8 @@ git checkout escrow-0.3.0
     <span class="hljs-keyword">pub</span> arbiter: CanonicalAddr,
     <span class="hljs-keyword">pub</span> recipient: CanonicalAddr,
     <span class="hljs-keyword">pub</span> source: CanonicalAddr,
-    <span class="hljs-keyword">pub</span> end_height: <span class="hljs-built_in">i64</span>,
-    <span class="hljs-keyword">pub</span> end_time: <span class="hljs-built_in">i64</span>,
+    <span class="hljs-keyword">pub</span> end_height: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">u64</span>&gt;,
+    <span class="hljs-keyword">pub</span> end_time: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">u64</span>&gt;,
 }
 </code></pre>
 <p>From <code>msg.rs</code>:</p>
@@ -86,17 +86,22 @@ git checkout escrow-0.3.0
 <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">InitMsg</span></span> {
     <span class="hljs-keyword">pub</span> arbiter: HumanAddr,
     <span class="hljs-keyword">pub</span> recipient: HumanAddr,
-    <span class="hljs-comment">// you can set a last time or block height the contract is valid at</span>
-    <span class="hljs-comment">// if *either* is non-zero and below current state, the contract is considered expired</span>
-    <span class="hljs-comment">// and will be returned to the original funder</span>
-    <span class="hljs-keyword">pub</span> end_height: <span class="hljs-built_in">i64</span>,
-    <span class="hljs-keyword">pub</span> end_time: <span class="hljs-built_in">i64</span>,
+    <span class="hljs-comment">/// When end height set and block height exceeds this value, the escrow is expired.</span>
+    <span class="hljs-comment">/// Once an escrow is expired, it can be returned to the original funder (via "refund").</span>
+    <span class="hljs-keyword">pub</span> end_height: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">u64</span>&gt;,
+    <span class="hljs-comment">/// When end time (in seconds since epoch 00:00:00 UTC on 1 January 1970) is set and</span>
+    <span class="hljs-comment">/// block time exceeds this value, the escrow is expired.</span>
+    <span class="hljs-comment">/// Once an escrow is expired, it can be returned to the original funder (via "refund").</span>
+    <span class="hljs-keyword">pub</span> end_time: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">u64</span>&gt;,
 }
 </code></pre>
 <p>Note that we use <code>CanonicalAddr</code>, which is the binary representation and unchanging over the lifetime of the chain, for storage inside <code>State</code>, while we use <code>HumanAddr</code>, which is the typical cli format (eg bech32 encoding), for messages and anything that interacts with the user. There is <a href="../intro/addresses">more info on addresses here</a>.</p>
+<p><code>Option&lt;u64&gt;</code> is a way of telling rust this field may be missing. It may either have a value, like <code>Some(123456)</code> or
+be <code>None</code>. This means the init message may omit those fields (or pass them as <code>null</code>) and we don't need to use some
+special value like <code>0</code> to signify disabled.</p>
 <p>Moving to the <code>HandleMsg</code> type, which defines the different contract methods, we make use of a slightly more complex rust construction, the <a href="https://doc.rust-lang.org/stable/rust-by-example/custom_types/enum.html"><code>enum</code></a>. This is also known as <a href="https://en.wikipedia.org/wiki/Tagged_union">a tagged union or sum type</a>, and contains a fixed set of defined possible data types, or <code>variants</code>, <em>exactly one of which must be set</em>. We use each <code>variant</code> to encode a different method. For example <code>HandleMsg::Refund{}</code> is a serializable request to refund the escrow, which is only valid after a timeout.</p>
 <pre><code class="hljs css language-rust"><span class="hljs-meta">#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]</span>
-<span class="hljs-meta">#[serde(rename_all = <span class="hljs-meta-string">"lowercase"</span>)]</span>
+<span class="hljs-meta">#[serde(rename_all = <span class="hljs-meta-string">"snake_case"</span>)]</span>
 <span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">HandleMsg</span></span> {
     Approve {
         <span class="hljs-comment">// release some coins - if quantity is None, release all coins in balance</span>
@@ -105,82 +110,91 @@ git checkout escrow-0.3.0
     Refund {},
 }
 </code></pre>
-<p>You can see another directive here (<code>#[serde(rename_all = &quot;lowercase&quot;)]</code>). This ensure the json looks like: <code>{&quot;approve&quot;: {&quot;quantity&quot;: ...}}</code> instead of <code>{&quot;Approve&quot;: {&quot;quantity&quot;: ...}}</code>. This controls the code generated with <code>Serialize</code> and <code>Deserialize</code>. You see how compile-time codegen (via derive and macros) is a corner-stone of rust, and provides much of the functionality provided by runtime reflection in other, more dynamic, languages.</p>
+<p>You can see another directive here (<code>#[serde(rename_all = &quot;snake_case&quot;)]</code>). This ensure the json looks like: <code>{&quot;approve&quot;: {&quot;quantity&quot;: ...}}</code> instead of <code>{&quot;Approve&quot;: {&quot;quantity&quot;: ...}}</code>. This controls the code generated with <code>Serialize</code> and <code>Deserialize</code>. You see how compile-time codegen (via derive and macros) is a corner-stone of rust, and provides much of the functionality provided by runtime reflection in other, more dynamic, languages.</p>
 <h3><a class="anchor" aria-hidden="true" id="json-format"></a><a href="#json-format" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON Format</h3>
-<p>When a <code>HandleMsg</code> instance is encoded, it will end up looking like <code>{&quot;approve&quot;: {&quot;quantity&quot;: [{&quot;amount&quot;: &quot;10&quot;, &quot;denom&quot;: &quot;ATOM&quot;}]}}</code> or <code>{&quot;refund&quot;: {}}</code>. This is also the format we should use client side, when submitting a message body to later be processed by <code>handle</code>. We are planning on modifying this for a stable v1 to look more like a json-rpc call format (which requires minimal code change in rust, mainly in the external format). It would then look more like: <code>{&quot;method&quot;: &quot;approve&quot;, &quot;params&quot;: {&quot;quantity&quot;: [{&quot;amount&quot;: &quot;10&quot;, &quot;denom&quot;: &quot;ATOM&quot;}]}}</code>. This would only affect the client-side code, and will be well documented when we start building out any client-side tooling.</p>
+<p>When a <code>HandleMsg</code> instance is encoded, it will end up looking like <code>{&quot;approve&quot;: {&quot;quantity&quot;: [{&quot;amount&quot;: &quot;10&quot;, &quot;denom&quot;: &quot;ATOM&quot;}]}}</code> or <code>{&quot;refund&quot;: {}}</code>. This is also the format we should use client side, when submitting a message body to later be processed by <code>handle</code>.</p>
 <h3><a class="anchor" aria-hidden="true" id="instantiation-logic"></a><a href="#instantiation-logic" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instantiation Logic</h3>
 <p>The <code>init</code> function will be called exactly once, before the contract is executed. It is a &quot;privileged&quot; function in that it can set configuration that can never be modified by any other method call. If you look at this example, the first line parses the input from raw bytes into our contract-defined message. We then create the initial state, and check if it is expired already. If expired, we return a generic contract error, otherwise, we store the state and return a success code:</p>
-<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">init</span></span>&lt;S: Storage, A: Api&gt;(
-    deps: &amp;<span class="hljs-keyword">mut</span> Extern&lt;S, A&gt;,
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">init</span></span>&lt;S: Storage, A: Api, Q: Querier&gt;(
+    deps: &amp;<span class="hljs-keyword">mut</span> Extern&lt;S, A, Q&gt;,
     env: Env,
     msg: InitMsg,
-) -&gt; <span class="hljs-built_in">Result</span>&lt;Response&gt; {
+) -&gt; InitResult {
     <span class="hljs-keyword">let</span> state = State {
         arbiter: deps.api.canonical_address(&amp;msg.arbiter)?,
         recipient: deps.api.canonical_address(&amp;msg.recipient)?,
-        source: env.message.signer.clone(),
+        source: env.message.sender.clone(),
         end_height: msg.end_height,
         end_time: msg.end_time,
     };
     <span class="hljs-keyword">if</span> state.is_expired(&amp;env) {
-        contract_err(<span class="hljs-string">"creating expired escrow"</span>)
+        <span class="hljs-literal">Err</span>(generic_err(<span class="hljs-string">"creating expired escrow"</span>))
     } <span class="hljs-keyword">else</span> {
         config(&amp;<span class="hljs-keyword">mut</span> deps.storage).save(&amp;state)?;
-        <span class="hljs-literal">Ok</span>(Response::default())
+        <span class="hljs-literal">Ok</span>(InitResponse::default())
     }
 }
 </code></pre>
-<p><code>config</code> is defined above and is a helper wrapper for interacting with the underlying <code>Storage</code>. It handles prefixing and de/serializing
+<p><code>config</code> is defined in <code>state.rs</code> and is a helper wrapper for interacting with the underlying <code>Storage</code>. It handles prefixing and de/serializing
 for you automatically, removing some boilerplate. It is completely optional and you can use <code>Storage</code> directly as well. We also encourage
 you to develop other shared libraries for interacting with <code>Storage</code> if you want to make certain use cases easier (eg. representing a queue):</p>
 <pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">config</span></span>&lt;S: Storage&gt;(storage: &amp;<span class="hljs-keyword">mut</span> S) -&gt; Singleton&lt;S, State&gt; {
-    singleton(storage, <span class="hljs-string">b"config"</span>)
+    singleton(storage, CONFIG_KEY)
 }
 </code></pre>
-<p>You may wonder about the <code>clone()</code> in <code>source: env.message.signer.clone()</code>. This has to do with rust lifetimes. If I pass in a variable, I give &quot;ownership&quot; to the other structure and may no longer use it in my code. Since I need to access a reference to env later to check expiration, <code>state.is_expired(&amp;env)</code>, I must first clone the struct. If I did not reference <code>env</code> anywhere below, I would not need the <code>clone</code>.</p>
-<p>Try to remove the <code>.clone()</code> and compile. See what your IDE or compile says.</p>
+<p>You may wonder about the <code>clone()</code> in <code>source: env.message.sender.clone()</code>. This has to do with rust lifetimes. If I pass in a variable, I give &quot;ownership&quot; to the other structure and may no longer use it in my code. Since I need to access a reference to env later to check expiration, <code>state.is_expired(&amp;env)</code>, I must first clone the struct. If I did not reference <code>env</code> anywhere below, I would not need the <code>clone</code>.</p>
+<p>Try to remove the <code>.clone()</code> and compile. See what your IDE or compiler says.</p>
 <h3><a class="anchor" aria-hidden="true" id="execution-logic"></a><a href="#execution-logic" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Execution Logic</h3>
 <p>Just as <code>init</code> is the entry point for instantiating a new contract, <code>handle</code> is the entry point for executing the code. Since <code>handle</code> takes an <code>enum</code> with multiple <code>variants</code>, we can't just jump into the business logic, but first start with loading the state, and dispatching the message:</p>
-<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">handle</span></span>&lt;S: Storage, A: Api&gt;(
-    deps: &amp;<span class="hljs-keyword">mut</span> Extern&lt;S, A&gt;,
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">handle</span></span>&lt;S: Storage, A: Api, Q: Querier&gt;(
+    deps: &amp;<span class="hljs-keyword">mut</span> Extern&lt;S, A, Q&gt;,
     env: Env,
     msg: HandleMsg,
-) -&gt; <span class="hljs-built_in">Result</span>&lt;Response&gt; {
-    <span class="hljs-keyword">let</span> state = config(&amp;<span class="hljs-keyword">mut</span> deps.storage).load()?;
+) -&gt; HandleResult {
+    <span class="hljs-keyword">let</span> state = config_read(&amp;deps.storage).load()?;
     <span class="hljs-keyword">match</span> msg {
-        HandleMsg::Approve { quantity } =&gt; try_approve(&amp;deps.api, env, state, quantity),
-        HandleMsg::Refund {} =&gt; try_refund(&amp;deps.api, env, state),
+        HandleMsg::Approve { quantity } =&gt; try_approve(deps, env, state, quantity),
+        HandleMsg::Refund {} =&gt; try_refund(deps, env, state),
     }
 }
 </code></pre>
-<p>Since CosmWasm 0.6.0, we will parse the incoming json into a contract-specific <code>HandleMsg</code> automatically before calling, assuming a JSON-encoding message. We also see the use of <code>config</code> again to load without any boilerplate. Note the trailing <code>?</code>. This works on <code>Result</code> types and means, &quot;If this is an error, return the underlying error. If this is a success, give me the value&quot;. It is a very useful shorthand all over rust and replaces the <code>if err != nil { return err }</code> boilerplate in Go.</p>
+<p>CosmWasm parses the incoming json into a contract-specific <code>HandleMsg</code> automatically before calling, assuming a JSON-encoding message. We also see the use of <code>config_read</code> to load without any boilerplate. Note the trailing <code>?</code>. This works on <code>Result</code> types and means, &quot;If this is an error, return the underlying error. If this is a success, give me the value&quot;. It is a very useful shorthand all over rust and replaces the <code>if err != nil { return err }</code> boilerplate in Go.</p>
 <p>You will also see the <a href="https://doc.rust-lang.org/1.30.0/book/2018-edition/ch06-02-match.html"><code>match</code> statement</a>. This is another nice Rust idiom, and allows you to <code>switch</code> over multiple patterns. Here we check the multiple variants of the <code>HandleMsg</code> enum. Note that if you don't cover all cases, the compiler will refuse to proceed.</p>
-<p>We pass in <code>&amp;deps.api</code> to give the handlers access to the &quot;precompiles&quot; from the runtime, which provide blockchain-specific logic. In particular, we currently use this to translate <code>CanonicalAddr</code> to <code>HumanAddr</code> in a blockchain-specific manner.</p>
-<p>If we now look into the <code>try_approve</code> function, we will see how we can respond to a message. We can return an <code>unauthorized</code> error if the <code>signer</code> is not what we expect, and custom <code>contract_err</code> if our business logic rejects the message. The <code>let amount =</code> line shows how we can use pattern matching to use the number of coins present in the msg if provided, or default to the entire balance of the contract. Mastering <code>match</code> is very useful for Rust development.</p>
-<pre><code class="hljs css language-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">try_approve</span></span>&lt;A: Api&gt;(
-    api: &amp;A,
-    params: Params,
+<p>We pass in <code>deps</code> to give the handlers access to runtime callbacks, which provide blockchain-specific logic. In particular, we currently use <code>deps.api</code> to translate <code>CanonicalAddr</code> to <code>HumanAddr</code> in a blockchain-specific manner. And we also use
+<code>deps.querier</code> to query the current balance of the contract.</p>
+<p>If we now look into the <code>try_approve</code> function, we will see how we can respond to a message. We can return an <code>unauthorized</code> error if the <code>signer</code> is not what we expect, and custom <code>generic_err</code> if our business logic rejects the message. The <code>let amount =</code> line shows how we can use pattern matching to use the number of coins present in the msg if provided, or default to the entire balance of the contract. Mastering <code>match</code> is very useful for Rust development.</p>
+<pre><code class="hljs css language-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">try_approve</span></span>&lt;S: Storage, A: Api, Q: Querier&gt;(
+    deps: &amp;<span class="hljs-keyword">mut</span> Extern&lt;S, A, Q&gt;,
+    env: Env,
     state: State,
     quantity: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">Vec</span>&lt;Coin&gt;&gt;,
-) -&gt; <span class="hljs-built_in">Result</span>&lt;Response&gt; {
-    <span class="hljs-keyword">if</span> params.message.signer != state.arbiter {
-        unauthorized()
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> state.is_expired(&amp;params) {
-        contract_err(<span class="hljs-string">"escrow expired"</span>)
+) -&gt; HandleResult {
+    <span class="hljs-keyword">if</span> env.message.sender != state.arbiter {
+        <span class="hljs-literal">Err</span>(unauthorized())
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> state.is_expired(&amp;env) {
+        <span class="hljs-literal">Err</span>(generic_err(<span class="hljs-string">"escrow expired"</span>))
     } <span class="hljs-keyword">else</span> {
-        <span class="hljs-meta">#[allow(clippy::or_fun_call)]</span>
-        <span class="hljs-keyword">let</span> amount = quantity.unwrap_or(params.contract.balance.unwrap_or_default());
+        <span class="hljs-keyword">let</span> amount = <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-literal">Some</span>(quantity) = quantity {
+            quantity
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// release everything</span>
+            <span class="hljs-keyword">let</span> contract_address_human = deps.api.human_address(&amp;env.contract.address)?;
+            <span class="hljs-comment">// Querier guarantees to returns up-to-date data, including funds sent in this handle message</span>
+            <span class="hljs-comment">// https://github.com/CosmWasm/wasmd/blob/master/x/wasm/internal/keeper/keeper.go#L185-L192</span>
+            deps.querier.query_all_balances(contract_address_human)?
+        };
+
         send_tokens(
-            api,
-            &amp;params.contract.address,
+            &amp;deps.api,
+            &amp;env.contract.address,
             &amp;state.recipient,
             amount,
-            <span class="hljs-string">"paid out funds"</span>,
+            <span class="hljs-string">"approve"</span>,
         )
     }
 }
 </code></pre>
-<p>At the end, on success, we want to send some tokens. Cosmwasm contracts cannot call other contracts directly, instead, we create a message to represent our request (<code>CosmosMsg::Send</code>) and return it as our contract ends. This will be parsed by the <code>wasm</code> module in go and it will execute and defined actions <em>in the same transaction</em>. This means, that while we will not get access to the return value, we can be ensured that if the send fails (user specified more coins than were in the escrow), all state changes in this contract would be reverted... just as if we returned a <code>ContractErr</code>. This is pulled into a helper to make the code clearer:</p>
+<p>At the end, on success, we want to send some tokens. Cosmwasm contracts cannot call other contracts directly, instead, we create a message to represent our request (<code>CosmosMsg::Bank(BankMsg::Send)</code>) and return it as our contract ends. This will be parsed by the <code>wasm</code> module in go and it will execute and defined actions <em>in the same transaction</em>. This means, that while we will not get access to the return value, we can be ensured that if the send fails (user specified more coins than were in the escrow), all state changes in this contract would be reverted... just as if we returned <code>unauthorized</code>. This is pulled into a helper to make the code clearer:</p>
 <pre><code class="hljs css language-rust"><span class="hljs-comment">// this is a helper to move the tokens, so the business logic is easy to read</span>
 <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">send_tokens</span></span>&lt;A: Api&gt;(
     api: &amp;A,
@@ -188,24 +202,24 @@ you to develop other shared libraries for interacting with <code>Storage</code> 
     to_address: &amp;CanonicalAddr,
     amount: <span class="hljs-built_in">Vec</span>&lt;Coin&gt;,
     action: &amp;<span class="hljs-built_in">str</span>,
-) -&gt; <span class="hljs-built_in">Result</span>&lt;Response&gt; {
+) -&gt; HandleResult {
     <span class="hljs-keyword">let</span> from_human = api.human_address(from_address)?;
     <span class="hljs-keyword">let</span> to_human = api.human_address(to_address)?;
     <span class="hljs-keyword">let</span> log = <span class="hljs-built_in">vec!</span>[log(<span class="hljs-string">"action"</span>, action), log(<span class="hljs-string">"to"</span>, to_human.as_str())];
 
-    <span class="hljs-keyword">let</span> r = Response {
-        messages: <span class="hljs-built_in">vec!</span>[CosmosMsg::<span class="hljs-built_in">Send</span> {
+    <span class="hljs-keyword">let</span> r = HandleResponse {
+        messages: <span class="hljs-built_in">vec!</span>[CosmosMsg::Bank(BankMsg::<span class="hljs-built_in">Send</span> {
             from_address: from_human,
             to_address: to_human,
             amount,
-        }],
-        log: log,
+        })],
+        log,
         data: <span class="hljs-literal">None</span>,
     };
     <span class="hljs-literal">Ok</span>(r)
 }
 </code></pre>
-<p>Note that <code>Env</code> encodes a lot of information from the blockchain, essentially providing the <code>Context</code> if you are coming from <code>cosmos-sdk</code>. This is validated data and can be trusted to compare any messages against. Refer to <a href="https://github.com/CosmWasm/cosmwasm/blob/v0.7.0/src/types.rs#L62-L89">the standard <code>cosmwasm</code> types</a> for references to all the available types in the environment.</p>
+<p>Note that <code>Env</code> encodes a lot of information from the blockchain, essentially providing the <code>Context</code> if you are coming from <code>cosmos-sdk</code>. This is validated data and can be trusted to compare any messages against. Refer to <a href="https://github.com/CosmWasm/cosmwasm/blob/v0.8.0/packages/std/src/types.rs#L70-L104">the standard <code>cosmwasm</code> types</a> for references to all the available types in the environment.</p>
 <h2><a class="anchor" aria-hidden="true" id="adding-a-new-message"></a><a href="#adding-a-new-message" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Adding a New Message</h2>
 <p>In this example, we will modify this contract to add some more functionality. In particular, let's make a backdoor to the contract. In the form of a <code>HandleMsg::Steal</code> variant that must be signed by some hard coded <code>THIEF</code> address and will release the entire contract balance to an address included in the message. Simple?</p>
 <p>Note that this also demonstrates the need to verify the code behind a contract rather than just rely on raw wasm. Since we have a reproducible compilation step (details below), if I show you code I claim to belong to the contract, you can compile it and compare the hash to the hash stored on the blockchain, to verify that this really is the original rust code. We will be adding tooling to automate this step and make it simpler in the coming months, but for now, this example serves to demonstrate why it is important.</p>
@@ -225,39 +239,29 @@ you to develop other shared libraries for interacting with <code>Storage</code> 
 <p>You can port the existing test to an integration test to ensure the compiled code also works. The integration tests can also use feature flags to test gas metering with the &quot;singlepass&quot; backend, you need to instrument the code to only run with metering enabled, and run this with rust nightly.</p>
 <p>Both of these cases will be explained in detail in a future tutorial. But I can promise you, any gas costs for computation will be negligible compared to the costs for reading/writing storage (including moving tokens).</p>
 <h2><a class="anchor" aria-hidden="true" id="compiling-for-production"></a><a href="#compiling-for-production" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compiling for Production</h2>
-<p>After we have our tested contract, we can run <code>cargo wasm</code>. But check out the size of the output:</p>
-<pre><code class="hljs css language-bash">$ cargo wasm
-$ du -h target/wasm32-unknown-unknown/release/cw_escrow.wasm
-1.8M    target/wasm32-unknown-unknown/release/cw_escrow.wasm
-</code></pre>
-<p>This works, but is huge for a blockchain transaction. Let's try to make it smaller. Turns out there is a linker flag to strip off debug information (Thanks Max):</p>
-<pre><code class="hljs css language-bash">$ RUSTFLAGS=<span class="hljs-string">'-C link-arg=-s'</span> cargo wasm
-$ du -h target/wasm32-unknown-unknown/release/cw_escrow.wasm
-112K    target/wasm32-unknown-unknown/release/cw_escrow.wasm
-</code></pre>
-<p>This is looking much better.</p>
-<h3><a class="anchor" aria-hidden="true" id="reproduceable-builds"></a><a href="#reproduceable-builds" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reproduceable builds</h3>
-<p>The typical case for production is just using the <a href="https://github.com/CosmWasm/cosmwasm-opt"><code>cosmwasm-opt</code></a>. This requires <code>docker</code> to be installed on your system first. With that in, you can just follow the instructions on the <a href="https://github.com/CosmWasm/cosmwasm-opt/blob/v0.7.0/README.md">README</a>:</p>
+<p>The typical case for production is using the <a href="https://github.com/CosmWasm/rust-optimizer"><code>rust-optimizer</code></a>. This requires <code>docker</code> to be installed on your system first. With that in, you can just follow the instructions on the <a href="https://github.com/CosmWasm/rust-optimizer/blob/v0.8.0/README.md">README</a>:</p>
 <pre><code class="hljs css language-bash">docker run --rm -v $(<span class="hljs-built_in">pwd</span>):/code \
   --mount <span class="hljs-built_in">type</span>=volume,<span class="hljs-built_in">source</span>=$(basename $(<span class="hljs-built_in">pwd</span>))_cache,target=/code/target \
   --mount <span class="hljs-built_in">type</span>=volume,<span class="hljs-built_in">source</span>=registry_cache,target=/usr/<span class="hljs-built_in">local</span>/cargo/registry \
-  confio/cosmwasm-opt:0.7.3
+  cosmwasm/rust-optimizer:0.8.0
 </code></pre>
-<p>It will output a file called <code>contract.wasm</code> in the project directory (same directory as <code>Cargo.toml</code>, one above <code>contract.rs</code>), as well as <code>hash.txt</code> with the sha256 hash. It will also update the schemas in <code>schema/handle_msg.json</code>. To see the effect of optimization, look at the file size now:</p>
-<pre><code class="hljs css language-text">$ du -h contract.wasm
-96K     contract.wasm
-</code></pre>
-<p>This is very similar to the build process above, but does a second pass to strip out any dead weight, including debug info and labels.
-But the main goal here is to make a reproduceable build, so that if someone tries to compile the code on a different machine 6 months later, they
-get the same output, byte for byte. This allows us to start proving claims of the source code behind various wasm components on chain.</p>
+<p>It will output a file called <code>contract.wasm</code> in the project directory (same directory as <code>Cargo.toml</code>, one above <code>contract.rs</code>), as well as <code>hash.txt</code> with the sha256 hash.</p>
+<p>This is very similar to the trimming build process before (<code>RUSTFLAGS='-C link-arg=-s' cargo wasm</code>),
+but does a second pass to strip out any dead weight, including debug info and labels.
+You can compare the sizes and see this is about 25% smaller.</p>
+<p>But the main goal here is to make a reproduceable build, so that if someone tries to compile the code on a different machine
+6 months later, they get the same output, byte for byte. This allows us to start proving claims of the source code behind various wasm components on chain.</p>
 <p>If you cut-paste code from the given solutions, you should have an identical sha256sum. (And if any line is different, this should be different, but consistent over multiple runs of the docker image above):</p>
 <pre><code class="hljs css language-text">$ cat hash.txt
-96babc67673eed23868622f0b89973ffc1196b758caa7b061da3f2f609d606b0  contract.wasm
+f6121df2a481e0c44c8e6f8d0488b58d4bc8b148e610e1b09c9373766f885912  contract.wasm
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="schema"></a><a href="#schema" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Schema</h3>
-<p>We can also generate JSON Schemas that serve as a guide for anyone trying to use the contract. To specify which arguments they need.
-We do plan to eventually release some tooling that uses those to auto-build clients with proper type-checks, but so far it is just for
-documentation purposes, if you don't want to dig into the Rust code to see the proper arguments. Go ahead and regenerate the schemas:</p>
+<p>We can also generate JSON Schemas that serve as a guide for anyone trying to use the contract.
+To specify which arguments they need.
+This is mainly for documentation purposes, but if you click on &quot;Open TypeScript definitions&quot;
+in the <a href="https://demonet.wasm.glass/codes/2">code explorer</a>, you can see how we use those to generate
+TypeScript bindings.</p>
+<p>For now, just go ahead and regenerate the schemas:</p>
 <pre><code class="hljs css language-bash">cargo schema
 </code></pre>
 <p>Now you should see the definition for the <code>&quot;steal&quot;</code> call added:</p>
@@ -268,12 +272,12 @@ documentation purposes, if you don't want to dig into the Rust code to see the p
 <pre><code class="hljs css language-bash">RUSTFLAGS=<span class="hljs-string">'-C link-arg=-s'</span> cargo wasm
 du -h target/wasm32-unknown-unknown/release/escrow.wasm
 </code></pre>
-<p>This is 112K, slightly larger than the fully compressed build above. However, it does contain more symbols, which allow one to use
+<p>This is slightly larger than the fully compressed build above. However, it does contain more symbols, which allow one to use
 <a href="https://rustwasm.github.io/twiggy/"><code>twiggy</code></a> and other tools to inspect which functions are taking up space.
-The <code>cosmwasm</code> repo also has a <a href="https://github.com/CosmWasm/cosmwasm/blob/v0.7.0/Building.md">longer discussion of the build process</a>.</p>
+The <code>cosmwasm</code> repo also has a <a href="https://github.com/CosmWasm/cosmwasm/blob/v0.8.0/Building.md">longer discussion of the build process</a>.</p>
 <p>In the current build, most usage seems to be out actual business logic, as well as a contribution from <code>serde_json_wasm</code> (which is far,
 far smaller than the original <code>serde_json</code> library). If you start pulling in more dependencies into your contracts and the size increases unexpectedly,
 this is a good place to track down where the bloat comes from and possibly remove it. This is the technique I used to reduce the build size from 172kB
 down to 68kB in an earlier version of CosmWasm (with less functionality).
 These techniques may be useful for others, especially when pulling in many new libraries.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 3/12/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/rust-basics"><span class="arrow-prev">← </span><span>Rust Basics</span></a><a class="docs-next button" href="/docs/getting-started/first-demo"><span>Deploying to Testnet</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#editing-code">Editing Code</a></li><li><a href="#a-walk-through-of-the-escrow-contract">A Walk-Through of the Escrow Contract</a><ul class="toc-headings"><li><a href="#data-structures">Data Structures</a></li><li><a href="#json-format">JSON Format</a></li><li><a href="#instantiation-logic">Instantiation Logic</a></li><li><a href="#execution-logic">Execution Logic</a></li></ul></li><li><a href="#adding-a-new-message">Adding a New Message</a><ul class="toc-headings"><li><a href="#adding-the-handler">Adding the Handler</a></li><li><a href="#writing-a-test">Writing a Test</a></li><li><a href="#checking-gas-usage">Checking Gas Usage</a></li></ul></li><li><a href="#compiling-for-production">Compiling for Production</a><ul class="toc-headings"><li><a href="#reproduceable-builds">Reproduceable builds</a></li><li><a href="#schema">Schema</a></li><li><a href="#debuggable-builds">Debuggable Builds</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 5/26/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/rust-basics"><span class="arrow-prev">← </span><span>Rust Basics</span></a><a class="docs-next button" href="/docs/getting-started/first-demo"><span>Deploying to Testnet</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#editing-code">Editing Code</a></li><li><a href="#a-walk-through-of-the-escrow-contract">A Walk-Through of the Escrow Contract</a><ul class="toc-headings"><li><a href="#data-structures">Data Structures</a></li><li><a href="#json-format">JSON Format</a></li><li><a href="#instantiation-logic">Instantiation Logic</a></li><li><a href="#execution-logic">Execution Logic</a></li></ul></li><li><a href="#adding-a-new-message">Adding a New Message</a><ul class="toc-headings"><li><a href="#adding-the-handler">Adding the Handler</a></li><li><a href="#writing-a-test">Writing a Test</a></li><li><a href="#checking-gas-usage">Checking Gas Usage</a></li></ul></li><li><a href="#compiling-for-production">Compiling for Production</a><ul class="toc-headings"><li><a href="#schema">Schema</a></li><li><a href="#debuggable-builds">Debuggable Builds</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>

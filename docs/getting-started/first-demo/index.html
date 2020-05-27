@@ -56,31 +56,36 @@
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Step by Step with a Sample Contract</h1></header><article><div><span><p>In this section, we will take the custom contract you have written in the last section, and upload it to a running blockchain. Then we will show how to inspect the code, instantiate contracts, and execute them - both the standard functionality as well as the secret backdoor we just implemented <a href="./editing-escrow-contract">in the last section</a>.</p>
 <h2><a class="anchor" aria-hidden="true" id="preparation"></a><a href="#preparation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Preparation</h2>
-<p>To get this to work, you will need to first deploy a local single-node testnet. I assume you have some experience with this, if not, please refer to <code>gaiad</code> documentation. You will need go 1.13 installed and standard dev tooling, and <code>$HOME/go/bin</code> set to be in your <code>$PATH</code>.</p>
-<p>Please first follow the <a href="./using-the-sdk">setup of the blockchain described in an earlier section</a>. To verify this is working, try:</p>
+<p>Please first review the <a href="./using-the-sdk">client setup instructions</a>, and configure and verify a client, either Go CLI or
+Node.JS console. Once you confirm that is working, try one of the following paths:</p>
+<h2><a class="anchor" aria-hidden="true" id="go-cli"></a><a href="#go-cli" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Go CLI</h2>
 <pre><code class="hljs css language-bash">wasmcli keys list
-<span class="hljs-comment"># should show [validator, fred, bob]</span>
+<span class="hljs-comment"># should show [fred, bob]</span>
 wasmcli status
 <span class="hljs-comment"># should show some blocks</span>
-wasmcli query account $(wasmcli keys show validator -a)
-<span class="hljs-comment"># should show a valid account</span>
 </code></pre>
 <p>Now, let's set up the accounts properly. Both fred and thief will need some amount of tokens in order to submit transaction:</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># add the thief account</span>
 wasmcli keys add thief
 
-<span class="hljs-comment"># fred will need some stake later to be able to submit transaction</span>
-wasmcli tx send $(wasmcli keys show validator -a) $(wasmcli keys show fred -a) 98765stake -y
+<span class="hljs-comment"># check if fred and thief are empty (does not exist message) and hit faucet if so</span>
+wasmcli query account $(wasmcli keys show fred -a)
+wasmcli query account $(wasmcli keys show thief -a)
+
+<span class="hljs-comment"># fred hits the faucet (JSON manipulation in bash is odd..)</span>
+JSON=$(jq -n --arg addr $(wasmcli keys show -a fred) <span class="hljs-string">'{"ticker":"COSM","address":$addr}'</span>)
+curl -X POST --header <span class="hljs-string">"Content-Type: application/json"</span> --data <span class="hljs-string">"<span class="hljs-variable">$JSON</span>"</span> https://faucet.demo-08.cosmwasm.com/credit
 wasmcli query account $(wasmcli keys show fred -a)
 
-<span class="hljs-comment"># thief will need one stake to be able to submit transaction</span>
-wasmcli tx send $(wasmcli keys show validator -a) $(wasmcli keys show thief -a) 1stake -y
+<span class="hljs-comment"># thief will need some coins to be able to submit transaction</span>
+JSON=$(jq -n --arg addr $(wasmcli keys show -a thief) <span class="hljs-string">'{"ticker":"COSM","address":$addr}'</span>)
+curl -X POST --header <span class="hljs-string">"Content-Type: application/json"</span> --data <span class="hljs-string">"<span class="hljs-variable">$JSON</span>"</span> https://faucet.demo-08.cosmwasm.com/credit
 wasmcli query account $(wasmcli keys show thief -a)
 
 <span class="hljs-comment"># bob should still be broke (and broken showing an Error that the account does not exist)</span>
 wasmcli query account $(wasmcli keys show bob -a)
 </code></pre>
-<h2><a class="anchor" aria-hidden="true" id="uploading-the-code"></a><a href="#uploading-the-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Uploading the Code</h2>
+<h3><a class="anchor" aria-hidden="true" id="uploading-the-code"></a><a href="#uploading-the-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Uploading the Code</h3>
 <p>Before we upload the code, we need to set up <code>THIEF</code> to be an address we control. First, let's make a new account, then update the contract to reference it:</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># for the rest of this section, we assume you are in the same path as the rust contract (Cargo.toml)</span>
 <span class="hljs-built_in">cd</span> &lt;path/to/rust/code&gt;
@@ -92,39 +97,38 @@ wasmcli keys show thief -a
 docker run --rm -v $(<span class="hljs-built_in">pwd</span>):/code \
   --mount <span class="hljs-built_in">type</span>=volume,<span class="hljs-built_in">source</span>=$(basename $(<span class="hljs-built_in">pwd</span>))_cache,target=/code/target \
   --mount <span class="hljs-built_in">type</span>=volume,<span class="hljs-built_in">source</span>=registry_cache,target=/usr/<span class="hljs-built_in">local</span>/cargo/registry \
-  confio/cosmwasm-opt:0.7.2
+  cosmwasm/rust-optimizer:0.8.0
 
 <span class="hljs-comment"># ensure the hash changed</span>
 cat hash.txt
 </code></pre>
 <p>First, we must upload some wasm code that we plan to use in the future. You can download the bytecode to verify it is proper:</p>
-<pre><code class="hljs css language-bash"><span class="hljs-comment"># both should be empty</span>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># see how many codes we have now</span>
 wasmcli query wasm list-code
 
-<span class="hljs-comment"># upload and see we create code 1</span>
-<span class="hljs-comment"># gas is huge due to wasm size... but auto-zipping reduced this from 800k to around 400k</span>
-wasmcli tx wasm store contract.wasm --from validator --gas 420000  -y
-wasmcli query wasm list-code
-wasmcli query wasm list-contract-by-code 1
-
-<span class="hljs-comment"># verify this uploaded contract has the same hash as the local code</span>
-cat hash.txt
+<span class="hljs-comment"># gas is huge due to wasm size... but auto-zipping reduced this from 1.8M to around 600k</span>
+<span class="hljs-comment"># you can see the code in the result</span>
+wasmcli tx wasm store contract.wasm --from fred --gas 600000  -y
+<span class="hljs-comment"># you can also get the code this way</span>
+CODE_ID=$(wasmcli query wasm list-code | jq .[-1].id)
+<span class="hljs-comment"># no contracts yet, this should return `null`</span>
+wasmcli query wasm list-contract-by-code <span class="hljs-variable">$CODE_ID</span>
 
 <span class="hljs-comment"># you can also download the wasm from the chain and check that the diff between them is empty</span>
-wasmcli query wasm code 1 download.wasm
+wasmcli query wasm code <span class="hljs-variable">$CODE_ID</span> download.wasm
 diff contract.wasm download.wasm
 </code></pre>
-<h2><a class="anchor" aria-hidden="true" id="instantiating-the-contract"></a><a href="#instantiating-the-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instantiating the Contract</h2>
+<h3><a class="anchor" aria-hidden="true" id="instantiating-the-contract"></a><a href="#instantiating-the-contract" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instantiating the Contract</h3>
 <p>We can now create an instance of this wasm contract. Here the verifier will fund an escrow, that will allow fred to control payout and upon release, the funds go to bob.</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># instantiate contract and verify</span>
-INIT=<span class="hljs-string">"{\"arbiter\":\"<span class="hljs-variable">$(wasmcli keys show fred -a)</span>\", \"recipient\":\"<span class="hljs-variable">$(wasmcli keys show bob -a)</span>\", \"end_time\":0, \"end_height\":0}"</span>
-wasmcli tx wasm instantiate 1 <span class="hljs-string">"<span class="hljs-variable">$INIT</span>"</span> --from validator --amount=50000stake  --label <span class="hljs-string">"escrow 1"</span> -y
+INIT=$(jq -n --arg fred $(wasmcli keys show -a fred) --arg bob $(wasmcli keys show -a bob) <span class="hljs-string">'{"arbiter":$fred,"recipient":$bob}'</span>)
+wasmcli tx wasm instantiate <span class="hljs-variable">$CODE_ID</span> <span class="hljs-string">"<span class="hljs-variable">$INIT</span>"</span> --from fred --amount=50000ucosm  --label <span class="hljs-string">"escrow 1"</span> -y
 
 <span class="hljs-comment"># check the contract state (and account balance)</span>
-wasmcli query wasm list-contract-by-code 1
-<span class="hljs-comment"># contracts ids (like code ids) are based on an auto-gen sequence</span>
-<span class="hljs-comment"># if this is the first contract in the devnet, it will have this address (otherwise, use the result from list-contract-by-code)</span>
-CONTRACT=cosmos18vd8fpwxzck93qlwghaj6arh4p7c5n89uzcee5
+wasmcli query wasm list-contract-by-code <span class="hljs-variable">$CODE_ID</span>
+CONTRACT=$(wasmcli query wasm list-contract-by-code <span class="hljs-variable">$CODE_ID</span> | jq -r .[0].address)
+<span class="hljs-built_in">echo</span> <span class="hljs-variable">$CONTRACT</span>
+<span class="hljs-comment"># we should see this contract with 50000ucosm</span>
 wasmcli query wasm contract <span class="hljs-variable">$CONTRACT</span>
 wasmcli query account <span class="hljs-variable">$CONTRACT</span>
 
@@ -151,8 +155,8 @@ wasmcli query wasm contract-state smart <span class="hljs-variable">$CONTRACT</s
 </code></pre>
 <p>Once we have the funds in the escrow, let us try to release them. First, failing to do so with a key that is not the verifier, then using the proper key to release. Note, we only release part of the escrow here (to leave some for the thief):</p>
 <pre><code class="hljs css language-bash"><span class="hljs-comment"># execute fails if wrong person</span>
-APPROVE=<span class="hljs-string">'{"approve":{"quantity":[{"amount":"20000","denom":"stake"}]}}'</span>
-wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$APPROVE</span>"</span> --from validator -y
+APPROVE=<span class="hljs-string">'{"approve":{"quantity":[{"amount":"20000","denom":"ucosm"}]}}'</span>
+wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$APPROVE</span>"</span> --from thief -y
 <span class="hljs-comment"># looking at the logs should show: "execute wasm contract failed: Unauthorized"</span>
 <span class="hljs-comment"># and bob should still be broke (and broken showing the account does not exist Error)</span>
 wasmcli query account $(wasmcli keys show bob -a)
@@ -162,16 +166,134 @@ wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class
 wasmcli query account $(wasmcli keys show bob -a)
 wasmcli query account <span class="hljs-variable">$CONTRACT</span>
 
-<span class="hljs-comment"># now the thief can steal it all</span>
-STEAL=<span class="hljs-string">"{\"steal\":{\"destination\":\"<span class="hljs-variable">$(wasmcli keys show thief -a)</span>\"}}"</span>
-wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$STEAL</span>"</span> --from thief -y
-<span class="hljs-comment"># remember that you gave the thief 1 stake to start with above... so this should be 30001</span>
+<span class="hljs-comment"># check what the thief has before</span>
 wasmcli query account $(wasmcli keys show thief -a)
+
+<span class="hljs-comment"># now the thief can steal all that is left</span>
+STEAL=$(jq -n --arg thief $(wasmcli keys show -a thief) <span class="hljs-string">'{"steal":{"destination":$thief}}'</span>)
+wasmcli tx wasm execute <span class="hljs-variable">$CONTRACT</span> <span class="hljs-string">"<span class="hljs-variable">$STEAL</span>"</span> --from thief -y
+<span class="hljs-comment"># remember we hit the faucet above, but this should raise the funds by 30000 ucosm</span>
+wasmcli query account $(wasmcli keys show thief -a)
+<span class="hljs-comment"># and this is empty</span>
 wasmcli query account <span class="hljs-variable">$CONTRACT</span>
 </code></pre>
+<h2><a class="anchor" aria-hidden="true" id="node-console"></a><a href="#node-console" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node Console</h2>
+<p>If you set up the Node Console / REPL in the
+<a href="./using-the-sdk">client setup section</a>, you can use that
+to deploy and execute your contract.
+I think you will find that JSON manipulation and parsing
+is a bit nicer in JavaScript than in Shell Script.</p>
+<p>First, go to the cli directory and start up your console:</p>
+<p><code>./bin/cosmwasm-cli --init examples/helpers.ts</code></p>
+<p>Now, we make all the keys and initialize clients:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> fredSeed = loadOrCreateMnemonic(<span class="hljs-string">"fred.key"</span>);
+<span class="hljs-keyword">const</span> {<span class="hljs-attr">address</span>: fredAddr, <span class="hljs-attr">client</span>: fredClient} = <span class="hljs-keyword">await</span> connect(fredSeed, {});
+
+<span class="hljs-comment">// bob doesn't have a client here as we will not</span>
+<span class="hljs-comment">// submit any tx with this account, just query balance</span>
+<span class="hljs-keyword">const</span> bobSeed = loadOrCreateMnemonic(<span class="hljs-string">"bob.key"</span>);
+<span class="hljs-keyword">const</span> bobAddr = <span class="hljs-keyword">await</span> mnemonicToAddress(<span class="hljs-string">"cosmos"</span>, bobSeed);
+
+<span class="hljs-keyword">const</span> thiefSeed = loadOrCreateMnemonic(<span class="hljs-string">"thief.key"</span>);
+<span class="hljs-keyword">const</span> {<span class="hljs-attr">address</span>: thiefAddr, <span class="hljs-attr">client</span>: thiefClient} = <span class="hljs-keyword">await</span> connect(thiefSeed, {});
+
+<span class="hljs-built_in">console</span>.log(fredAddr, bobAddr, thiefAddr);
+</code></pre>
+<p>Hit the faucet it needed for fred and thief, so they
+have tokens to submit transactions:</p>
+<pre><code class="hljs css language-js">fredClient.getAccount();
+<span class="hljs-comment">// if "undefined", do the following</span>
+hitFaucet(defaultFaucetUrl, fredAddr, <span class="hljs-string">"COSM"</span>)
+fredClient.getAccount();
+
+thiefClient.getAccount();
+<span class="hljs-comment">// if "undefined", do the following</span>
+hitFaucet(defaultFaucetUrl, thiefAddr, <span class="hljs-string">"COSM"</span>)
+thiefClient.getAccount();
+
+<span class="hljs-comment">// check bobAddr has no funds</span>
+fredClient.getAccount(bobAddr);
+
+<span class="hljs-comment">// we need this address to configure the contract properly</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"thief"</span>, thiefAddr);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="compiling-the-code"></a><a href="#compiling-the-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compiling the Code</h3>
+<p>Before we upload the code, we need to set up <code>THIEF</code> to be an address we control. First, let's make a new account, then update the contract to reference it.
+Go to your IDE, set the THIEF variable properly,
+and recompile your contract:</p>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># for the rest of this section, we assume you are in the same path as the rust contract (Cargo.toml)</span>
+<span class="hljs-built_in">cd</span> &lt;path/to/rust/code&gt;
+
+<span class="hljs-comment"># Set the THIEF variable in source code to the value</span>
+<span class="hljs-comment"># we got above</span>
+SET-THIEF-VARIABLE
+
+<span class="hljs-comment"># and recompile wasm</span>
+docker run --rm -v $(<span class="hljs-built_in">pwd</span>):/code \
+  --mount <span class="hljs-built_in">type</span>=volume,<span class="hljs-built_in">source</span>=$(basename $(<span class="hljs-built_in">pwd</span>))_cache,target=/code/target \
+  --mount <span class="hljs-built_in">type</span>=volume,<span class="hljs-built_in">source</span>=registry_cache,target=/usr/<span class="hljs-built_in">local</span>/cargo/registry \
+  cosmwasm/rust-optimizer:0.8.0
+
+<span class="hljs-comment"># ensure the hash changed</span>
+cat hash.txt
+
+<span class="hljs-comment"># copy it to the same</span>
+cp contract.wasm &lt;/path/to/cosmwasm-js/packages/cli&gt;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="uploading-with-js"></a><a href="#uploading-with-js" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Uploading with JS</h3>
+<p>Now, we go back to the Node console and upload the
+contract and instantiate it:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> wasm = fs.readFileSync(<span class="hljs-string">'contract.wasm'</span>);
+<span class="hljs-comment">// fake source, but this can be verified to be false</span>
+<span class="hljs-comment">// by any careful observer</span>
+<span class="hljs-keyword">const</span> up = <span class="hljs-keyword">await</span> fredClient.upload(wasm, { <span class="hljs-attr">source</span>: <span class="hljs-string">"https://crates.io/api/v1/crates/cw-escrow/0.4.0/download"</span>, <span class="hljs-attr">builder</span>: <span class="hljs-string">"cosmwasm/rust-optimizer:0.8.0"</span>});
+
+<span class="hljs-built_in">console</span>.log(up);
+<span class="hljs-keyword">const</span> { codeId } = up;
+
+<span class="hljs-keyword">const</span> initMsg = {<span class="hljs-attr">arbiter</span>: fredAddr, <span class="hljs-attr">recipient</span>: bobAddr};
+<span class="hljs-keyword">const</span> { contractAddress } = <span class="hljs-keyword">await</span> fredClient.instantiate(codeId, initMsg, <span class="hljs-string">"Escrow 1"</span>, <span class="hljs-string">"memo"</span>, [{<span class="hljs-attr">denom</span>: <span class="hljs-string">"ucosm"</span>, <span class="hljs-attr">amount</span>: <span class="hljs-string">"50000"</span>}]);
+
+<span class="hljs-comment">// check the contract is set up properly</span>
+<span class="hljs-built_in">console</span>.log(contractAddress);
+fredClient.getContract(contractAddress);
+fredClient.getAccount(contractAddress);
+
+<span class="hljs-comment">// make a raw query - key length prefixed "config"</span>
+<span class="hljs-keyword">const</span> key = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>([<span class="hljs-number">0</span>, <span class="hljs-number">6</span>, ...toAscii(<span class="hljs-string">"config"</span>)]);
+<span class="hljs-keyword">const</span> raw = <span class="hljs-keyword">await</span> fredClient.queryContractRaw(contractAddress, key2);
+<span class="hljs-built_in">JSON</span>.parse(fromUtf8(raw))
+<span class="hljs-comment">// note the addresses are stored in base64 internally, not bech32, but the data is there... this is why we often implement smart queries on real contracts</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="executing-contract-with-js"></a><a href="#executing-contract-with-js" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Executing Contract with JS</h3>
+<p>Once we have properly configured the contract, let's
+show how to use it, both the proper &quot;approve&quot; command
+as well as our backdoor &quot;steal&quot; command:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> approve = {<span class="hljs-attr">approve</span>: {<span class="hljs-attr">quantity</span>: [{<span class="hljs-attr">amount</span>: <span class="hljs-string">"20000"</span>, <span class="hljs-attr">denom</span>: <span class="hljs-string">"ucosm"</span>}]}};
+
+<span class="hljs-comment">// thief cannot approve</span>
+thiefClient.execute(contractAddress, approve)
+
+<span class="hljs-comment">// but fred can (and moves money to bob)</span>
+fredClient.execute(contractAddress, approve);
+fredClient.getAccount(bobAddr);
+fredClient.getAccount(contractAddress);
+
+<span class="hljs-comment">// now the thief can steal the rest...</span>
+<span class="hljs-keyword">const</span> steal = {<span class="hljs-attr">steal</span>: {<span class="hljs-attr">destination</span>: thiefAddr}};
+thiefClient.execute(contractAddress, steal);
+
+<span class="hljs-comment">// thief got some more ucosm, contract lost, and bob stays the same</span>
+fredClient.getAccount(thiefAddr);
+fredClient.getAccount(contractAddress);
+fredClient.getAccount(bobAddr);
+</code></pre>
+<p>You might notice that the thief got 20k and bob as well,
+and the contract is down by 50k. What's up with that?</p>
+<p>Well, we pay configurable gas fees for all execute transactions, by default 5000ucosm for 200k gas (0.025ucosm / gas). The thief made two transactions and paid 10k ucosm in gas.</p>
 <h2><a class="anchor" aria-hidden="true" id="next-steps"></a><a href="#next-steps" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Next Steps</h2>
 <p>This is a very simple example for the escrow contract we developed, but it should show you what is possible, limited only by the wasm code you upload and the json messages you send. If you want a guided tutorial to build a contract from start to finish, check out the <a href="../name-service/intro">name service tutorial</a>.</p>
 <p>If you feel you understand enough (and have prior experience with rust), feel free to grab <a href="https://github.com/CosmWasm/cosmwasm-template"><code>cosmwasm-template</code></a> and use that as a configured project to start modifying. Do not clone the repo, but rather follow the <a href="https://github.com/CosmWasm/cosmwasm-template/blob/master/README.md">README</a> on how to use <code>cargo-generate</code> to generate your skeleton.</p>
 <p>In either case, there is some documentation in <a href="https://github.com/CosmWasm/go-cosmwasm/blob/master/spec/Index.md"><code>go-cosmwasm</code></a> and <a href="https://github.com/CosmWasm/cosmwasm/blob/master/README.md"><code>cosmwasm</code></a> that may be helpful. Any issues (either bugs or just confusion), please submit them on <a href="https://github.com/CosmWasm/cosmwasm/issues"><code>cosmwasm/issues</code></a> if they deal with the smart contract, and <a href="https://github.com/CosmWasm/wasmd/issues"><code>wasmd/issues</code></a> if they have to do with the SDK integration.</p>
 <p>Happy Hacking!</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 3/12/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/editing-escrow-contract"><span class="arrow-prev">← </span><span>Editing Contracts</span></a><a class="docs-next button" href="/docs/name-service/intro"><span>Intro</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#preparation">Preparation</a></li><li><a href="#uploading-the-code">Uploading the Code</a></li><li><a href="#instantiating-the-contract">Instantiating the Contract</a></li><li><a href="#next-steps">Next Steps</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 5/26/2020 by Ethan Frey</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started/editing-escrow-contract"><span class="arrow-prev">← </span><span>Editing Contracts</span></a><a class="docs-next button" href="/docs/name-service/intro"><span>Intro</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#preparation">Preparation</a></li><li><a href="#go-cli">Go CLI</a><ul class="toc-headings"><li><a href="#uploading-the-code">Uploading the Code</a></li><li><a href="#instantiating-the-contract">Instantiating the Contract</a></li></ul></li><li><a href="#node-console">Node Console</a><ul class="toc-headings"><li><a href="#compiling-the-code">Compiling the Code</a></li><li><a href="#uploading-with-js">Uploading with JS</a></li><li><a href="#executing-contract-with-js">Executing Contract with JS</a></li></ul></li><li><a href="#next-steps">Next Steps</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/intro/overview">Getting Started</a><a href="/blog">Blog</a></div><div><h5>Community</h5><a href="https://twitter.com/CosmWasm">Twitter</a><a href="https://t.me/joinchat/AkZriEhk9qcRw5A5U2MapA">Telegram</a><a href="mailto:cosmwasm@confio.tech">cosmwasm@confio.tech</a></div><div><h5>More</h5><a href="https://github.com/CosmWasm/cosmwasm">GitHub</a><a href="https://medium.com/confio">Confio Blog</a></div></section><section class="copyright">Copyright © 2020 Confio UO</section></footer></div></body></html>
