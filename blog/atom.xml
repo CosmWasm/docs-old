@@ -16,7 +16,6 @@
         <summary type="html"><![CDATA[<p>CosmWasm is a new smart contracting platform built for the cosmos ecosystem. If you haven't yet heard of it, please <a href="https://blog.cosmos.network/announcing-the-launch-of-cosmwasm-cc426ab88e12">check out this intro</a>. The purpose of this article is to give a deep dive into the technology for developers who wish to try it out or ...</p>]]></summary>
         <author>
             <name>Ethan Frey</name>
-            <email/>
             <uri>https://github.com/ethanfrey</uri>
         </author>
     </entry>
