@@ -19,7 +19,16 @@
       "getting-started/first-demo"
     ],
     "Name Service": [
-      "name-service/intro"
+      "name-service/intro",
+      "name-service/prereq",
+      "name-service/structure",
+      "name-service/state",
+      "name-service/state-a",
+      "name-service/msg",
+      "name-service/msg-a",
+      "name-service/helpers",
+      "name-service/contract",
+      "name-service/schema"
     ],
     "Production Tooling": [
       "tooling/verify",
